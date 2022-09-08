@@ -65,9 +65,6 @@ for i in trange(int(steps)):
                     v[j][u] = -v[j][u]
                     l += 1
             
-     
-
-
 u = np.zeros([N])    
 for i in range(N):
     u[i] = np.linalg.norm(v[i])

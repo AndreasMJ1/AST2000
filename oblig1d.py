@@ -1,12 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
-import ast2000tools.constants as const
 from tqdm import trange
 from numba import jit
 import ast2000tools.utils as utils
-
 from ast2000tools.space_mission import SpaceMission
+import ast2000tools.constants as const
 
 
 #CONSTANTS
@@ -15,7 +14,7 @@ k = 1.38064852e-23 #Boltzmann's Constant
 #PHYSICAL VARIABLES
 T = 3e3           #Temperature in Kelvin
 L = 10e-6         #Box Length in meters
-N = 1e3           #Number of particles
+N = 1e4           #Number of particles
 m = 3.3474472e-27 #Mass of individual particle in kg
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
@@ -70,15 +69,14 @@ plt.show()
 """
 
 def rocketengine_perf(mean_force,dv):
-    guess_boxes = 1e18 
-    
+    guess_boxes = 1e14 
     total_force = mean_force * guess_boxes 
     rocket_mass =  mission.spacecraft_mass
     fuel_mass = N*guess_boxes*m + rocket_mass*20
     total_mass = fuel_mass+rocket_mass
     a = -total_force/total_mass
     delta_t = dv/a
-    fuel_consume = box_mass * guess_boxes * delta_t 
+    fuel_consume = box_mass * guess_boxes 
     
     return fuel_consume, delta_t
 
@@ -89,16 +87,14 @@ x,l,exiting,f = particle_sim(x,v,l,exiting,f)
 particles_per_second = exiting/time  #The number of particles exiting per second
 mean_force = f/steps                             #The box force averaged over all time steps
 box_mass = particles_per_second*m                     #The total fuel loss per second
+force_ps = mean_force*1e14
 
 print(rocketengine_perf(mean_force,1000))
 print('There are {:g} particles exiting the gas box per second.'\
 .format(particles_per_second))
 print('The gas box exerts a thrust of {:g} N.'.format(mean_force))
 print('The box has lost a mass of {:g} kg/s.'.format(box_mass))
-print(mission.spacecraft_mass)
-
-
-
+print(force_ps)
 
 
 
