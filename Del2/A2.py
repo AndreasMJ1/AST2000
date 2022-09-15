@@ -8,7 +8,7 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-from A_1 import analytic_orbits
+from A1 import analytic_orbits
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
@@ -42,14 +42,16 @@ def sim_orbits(steps):
     a_chk = []
     for i in trange(steps-1):
         for p in range(7):
-            if i == 0 or int(steps/2):
+            if i == 0 or i == int(steps/2):
                 a = grav(r[i,p])
                 vh = v[i,p] + a*dt/2 
                 r[i+1,p] = r[i,p] + vh*dt 
                 a = grav(r[i+1,p])
                 v[i+1,p] = vh + a*dt/2
-                areal = np.linalg.norm((r[i,0,:]+r[i+1,0,:])/2) * np.linalg.norm((r[i+1,0,:]-r[i,0,:]))
-                a_chk.append(areal)
+                areal = (np.linalg.norm((r[i,p,:]+r[i+1,p,:])/2) * np.linalg.norm((r[i+1,p,:]-r[i,p,:])))/2
+                dist = np.linalg.norm((r[i+1,p,:]-r[i,p,:]))
+                vel = dist/dt
+                a_chk.append([areal,dist,vel])
 
             else: 
                 a = grav(r[i,p])
@@ -65,7 +67,8 @@ r,v,a_chk = sim_orbits(20000)
 for i in range(7):
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[1])
 
-print(a_chk)
+print((a_chk[0][0]-a_chk[7][0],a_chk[0][1],a_chk[7][1],a_chk[0][2],a_chk[7][2]))
+print(p_vel[0,0],p_vel[1,0])
 plt.scatter(0,0)
 plt.plot(r[:,0,0],r[:,0,1])
 plt.plot(r[:,1,0],r[:,1,1])
