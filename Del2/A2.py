@@ -69,15 +69,15 @@ def sim_orbits(steps):            #Simulation Loop
     return r , v , a_chk, cnt,push_p
 
 
-
 r,v,a_chk,cnt,push_p = sim_orbits(119000)  #20 000
 for i in range(7):  #Plotting Exact solution
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[1],linestyle='dotted')
 
 print((a_chk[0][0]-a_chk[7][0],a_chk[0][1],a_chk[7][1],a_chk[0][2],a_chk[7][2]))
 print(p_vel[0,0],p_vel[1,0])
+print(push_p)
 
-print(f"Kepler{595*0.002,np.sqrt(m_ax[0]**3)}")
+print(f"Kepler {595*0.002,np.sqrt(m_ax[0]**3)}")
 print(f"Netwon {595*0.002,np.sqrt((4*np.pi**2)/(4*np.pi**2*(system.star_mass+system.masses[0]))*m_ax[0]**3)}")
 
 
