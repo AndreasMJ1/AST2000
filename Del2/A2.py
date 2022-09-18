@@ -31,15 +31,16 @@ def grav(r):
 
 v0 = np.array([[p_vel[0,0],p_vel[1,0]],[p_vel[0,1],p_vel[1,1]],[p_vel[0,2],p_vel[1,2]],[p_vel[0,3],p_vel[1,3]],
      [p_vel[0,4],p_vel[1,4]],[p_vel[0,5],p_vel[1,5]],[p_vel[0,6],p_vel[1,6]]]) #Init values
+
 r0 = np.array([[p_pos[0,0],p_pos[1,0]],[p_pos[0,1],p_pos[1,1]],[p_pos[0,2],p_pos[1,2]],[p_pos[0,3],p_pos[1,3]],
            [p_pos[0,4],p_pos[1,4]],[p_pos[0,5],p_pos[1,5]],[p_pos[0,6],p_pos[1,6]]]) #Init values 
 
-def sim_orbits(steps):            #Simulation Loop
+def sim_orbits(steps,dt):            #Simulation Loop
     r = np.zeros((steps,7,2))
     v = np.zeros((steps,7,2))
     v[0] = v0
     r[0] = r0
-    dt = 0.0002
+    dt = dt
     a_chk = []
     cnt = 0
     push_p = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}
@@ -69,7 +70,7 @@ def sim_orbits(steps):            #Simulation Loop
     return r , v , a_chk, cnt,push_p
 
 
-r,v,a_chk,cnt,push_p = sim_orbits(119000)  #20 000
+r,v,a_chk,cnt,push_p = sim_orbits(119000,0.0002)  #20 000
 for i in range(7):  #Plotting Exact solution
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[1],linestyle='dotted')
 
