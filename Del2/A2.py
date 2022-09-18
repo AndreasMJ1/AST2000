@@ -69,7 +69,7 @@ def sim_orbits(steps,dt):            #Simulation Loop
         
     return r , v , a_chk, cnt,push_p
 
-
+"""
 r,v,a_chk,cnt,push_p = sim_orbits(119000,0.0002)  #20 000
 for i in range(7):  #Plotting Exact solution
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[1],linestyle='dotted')
@@ -92,3 +92,4 @@ plt.plot(r[:,5,0],r[:,5,1])
 plt.plot(r[:,6,0],r[:,6,1])
 plt.legend(['0','1','2','3','4','5','6'])
 plt.show()
+"""
