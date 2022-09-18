@@ -9,7 +9,7 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-from A1 import analytic_orbits
+from test4 import analytic_orbits
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
@@ -46,7 +46,7 @@ def sim_orbits(steps,dt):            #Simulation Loop
     push_p = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}
     for i in trange(steps-1):
         for p in range(7):
-            if i == 0 or i == int(steps/2):
+            if i == 0 or i == int(steps/4):
                 a = grav(r[i,p])
                 vh = v[i,p] + a*dt/2 
                 r[i+1,p] = r[i,p] + vh*dt 
@@ -69,27 +69,29 @@ def sim_orbits(steps,dt):            #Simulation Loop
         
     return r , v , a_chk, cnt,push_p
 
-"""
-r,v,a_chk,cnt,push_p = sim_orbits(119000,0.0002)  #20 000
-for i in range(7):  #Plotting Exact solution
-    plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[1],linestyle='dotted')
+color_list = ['Firebrick','Chartreuse','Khaki','Sienna','CornflowerBlue','Teal','Fuchsia']
 
-print((a_chk[0][0]-a_chk[7][0],a_chk[0][1],a_chk[7][1],a_chk[0][2],a_chk[7][2]))
-print(p_vel[0,0],p_vel[1,0])
-print(push_p)
+r,v,a_chk,cnt,push_p = sim_orbits(119000,0.0002)  #Unpacking simulation 
 
-print(f"Kepler {595*0.002,np.sqrt(m_ax[0]**3)}")
-print(f"Netwon {595*0.002,np.sqrt((4*np.pi**2)/(4*np.pi**2*(system.star_mass+system.masses[0]))*m_ax[0]**3)}")
+for i in range(7):                                #Plotting Exact solution
+    plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i]
+    ,119000,p_pos[0][i],p_pos[1][i])[1],linestyle='dotted',color = f'{color_list[i]}')
+
+print((a_chk[0][0],a_chk[7][0],a_chk[0][0]-a_chk[7][0],a_chk[0][1],a_chk[7][1],a_chk[0][2],a_chk[7][2])) #(-8.282099940755405e-12, 0.0012898681485006699, 0.0012898732900769251, 6.449340742503349, 6.449366450384625)
+
+#print(p_vel[0,0],p_vel[1,0])
+
+#print(push_p)
+
+print(f"Kepler {119000*0.0002/20,np.sqrt(m_ax[0]**3)}")
+print(f"Netwon {119000*0.0002/20,np.sqrt((4*np.pi**2)/(4*np.pi**2*(system.star_mass+system.masses[0]))*m_ax[0]**3),}") #595*0.002
 
 
-plt.scatter(0,0)            #Plotting simulation 
-plt.plot(r[:,0,0],r[:,0,1])
-plt.plot(r[:,1,0],r[:,1,1])
-plt.plot(r[:,2,0],r[:,2,1])
-plt.plot(r[:,3,0],r[:,3,1])
-plt.plot(r[:,4,0],r[:,4,1])
-plt.plot(r[:,5,0],r[:,5,1])
-plt.plot(r[:,6,0],r[:,6,1])
+plt.scatter(0,0,color = 'black')                  #Plotting simulation 
+for i in range(6):
+    plt.plot(r[:,i,0],r[:,i,1],color = f'{color_list[i]}')
 plt.legend(['0','1','2','3','4','5','6'])
+plt.xlabel('Distance (AU)')
+plt.ylabel('Distance (AU)')
+plt.title('Comparing analytical and numeric calculations')
 plt.show()
-"""
