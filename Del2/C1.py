@@ -24,50 +24,52 @@ p_pos = system.initial_positions
 p_vel = system.initial_velocities
 
 p3 = system.masses[0]
-
 G = 4*np.pi**2
 Sm = system.star_mass
+
 def gravS(r:np.ndarray): 
     r_norm = np.linalg.norm(r)         #Function for gravity, vectorized
-    a = -G*p3*(r/(r_norm**3))
+    a = (-G*p3*Sm)/(r_norm**3)*r 
     return a 
 
-
 def sim_orbit1(steps,dt):            #Simulation Loop
+    sv = -(p3*p_vel[1,0])/Sm
     r = np.zeros((steps,2,2))
     v = np.zeros((steps,2,2))
-    r0 = np.array([[0,0],[p_pos[0,0],p_pos[1,0]]])
-    v0 = np.array([[0,0],[p_vel[0,0],p_vel[1,0]]])
+    r0 = np.array([np.array([0,0]),[p_pos[0,0],p_pos[1,0]]])
+    v0 = np.array([np.array([0,sv]),[p_vel[0,0],p_vel[1,0]]])
     v[0] = v0
     r[0] = r0
     dt = dt
-    mc = (Sm*system.masses[0])/(Sm+system.masses[0])
     for i in trange(steps-1):
-        #sim p
-        a = grav((r[i,1]-r[i,0]))
-        vh = v[i,1] + a*dt/2 
-        r[i+1,1] = r[i,1] + vh*dt 
-        a = grav(r[i+1,1])
-        v[i+1,1] = vh + a*dt/2
-        #sim s 
-        a1 = gravS((r[i,0]-r[i,1]))
-        vh1 = v[i,0] + a1*dt/2 
-        r[i+1,0] = r[i,0] + vh1*dt 
-        a1 = gravS(r[i+1,0])
-        v[i+1,0] = vh1 + a1*dt/2
+        #a_s = (-G*(Sm+p3))/((np.linalg.norm(r[i,1]-r[i,0])**3))*(r[i,1]-r[i,0])
+        f_s = gravS(r[i,1]-r[i,0])
+        a_s = f_s*dt/Sm
+
+        #a_p = (-G*(Sm+p3))/((np.linalg.norm(r[i,1]-r[i,0])**3))*(r[i,1]-r[i,0])
+        f_p = gravS(r[i,1]-r[i,0])
+        a_p = f_p*dt/p3
+
+        vhs = v[i,0] + a_s*dt/2
+        vhp = v[i,1] + a_p*dt/2
+
+        r[i+1,0] = r[i,0] + vhs*dt
+        r[i+1,1] = r[i,1] + vhp*dt 
+
+        f_s = gravS(np.array([(r[i+1,1]-r[i+1,0])]))
+        a_s = f_s/Sm
+
+        f_p = gravS(np.array([(r[i+1,1]-r[i+1,0])]))
+        a_p = f_p/p3
+
+        v[i+1,0] = v[i,0] + a_s*dt/2
+        v[i+1,1] = v[i,1] + a_p*dt/2
     return r , v 
 
-#print(g)
-#print(gravS(np.array([p_pos[0,3],p_pos[1,3]])))
 
-r1,v1 = sim_orbit1(11900,0.002)
+r1,v1 = sim_orbit1(119000,0.0002)
 
 #plt.plot(r1[:,0,0],r1[:,0,1])
 plt.plot(r1[:,1,0],r1[:,1,1])
 
 plt.show()
-
-#r,v,a_chk,cnt,push_p = sim_orbits(11900,0.002)
-#plt.plot(r[:,3,0],r[:,3,1])
-#plt.scatter(0,0)
-#plt.show()
