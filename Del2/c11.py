@@ -63,9 +63,9 @@ def solar_orbit(N,planetindx):
 
     for s in range(N-1):
         a_s = np.array([0,0],dtype= 'float64')
-        vh = sun_v[s] +a_s*dt/2
-        sun_r[s+1] = sun_r[s] +vh*dt
-        sun_v[s+1] = sun_v[s] + a_s*dt/2
+        vhs = sun_v[s] +a_s*dt/2
+        sun_r[s+1] = sun_r[s] +vhs*dt
+        sun_v[s+1] = vhs + a_s*dt/2
         for p in range(len(masses)):
             a_s += (gravity(r[s,p],p_masses[p])/Sm)
 
@@ -73,7 +73,7 @@ def solar_orbit(N,planetindx):
             vh = v[s,p] + a*dt/2
             r[s+1,p] = r[s,p] + vh*dt
             a = (gravity(r[s+1,p],p_masses[p])/p_masses[p])
-            v[s+1,p] = v[s,p] + a*dt/2
+            v[s+1,p] = vh + a*dt/2
     return sun_r, sun_v, r,v
 
 sun_r, sun_v, r, v = solar_orbit(11900, np.array([0,1,5]))
