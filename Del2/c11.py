@@ -35,7 +35,7 @@ def gravity(r,pmass):
 
 
 def solar_orbit(N,planetindx):
-    dt = 0.002 
+    dt = 0.0002 
     masses = np.zeros(len(planetindx))
     for i in range(len(masses)):
         masses[i] = planetindx[i]
@@ -46,7 +46,7 @@ def solar_orbit(N,planetindx):
     for i in range(len(masses)):
         index = int(masses[i])
         v0[0,i] = np.array([p_vel[0,index],p_vel[1,index]])
-        r0[0,i] = np.array([p_pos[0,index],p_pos[0,index]])
+        r0[0,i] = np.array([p_pos[0,index],p_pos[1,index]])
     r[0] = r0
     v[0] = v0
     p_masses = np.zeros(len(masses))
@@ -58,11 +58,10 @@ def solar_orbit(N,planetindx):
         sigma_p+= v[0,i]*p_masses[i]
     sun_v = np.zeros((N,2))
     sun_v[0] = -sigma_p/Sm
-    print(sun_v[0])
     sun_r = np.zeros((N,2))
 
-    for s in range(N-1):
-        a_s = np.array([0,0],dtype= 'float64')
+    for s in trange(N-1):
+        a_s = np.array([0,0],dtype= 'float64') # np.array((1,2),dtype= 'float64')
         vhs = sun_v[s] +a_s*dt/2
         sun_r[s+1] = sun_r[s] +vhs*dt
         sun_v[s+1] = vhs + a_s*dt/2
@@ -76,8 +75,13 @@ def solar_orbit(N,planetindx):
             v[s+1,p] = vh + a*dt/2
     return sun_r, sun_v, r,v
 
-sun_r, sun_v, r, v = solar_orbit(11900, np.array([0,1,5]))
+sun_r, sun_v, r, v = solar_orbit(119000, np.array([0,2,5]))
+
 plt.plot(sun_r[:,0],sun_r[:,1])
+plt.plot(r[:,0,0],r[:,0,1])
+plt.plot(r[:,1,0],r[:,1,1])
+plt.plot(r[:,2,0],r[:,2,1])
+plt.legend(['sun','0','2','5'])
 plt.show()
 
 
