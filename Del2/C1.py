@@ -43,18 +43,13 @@ def sim_orbit1(steps,dt):            #Simulation Loop
     r[0] = r0
     dt = dt
     for i in trange(steps-1):
-        #a_s = (-G*(Sm+p3))/((np.linalg.norm(r[i,1]-r[i,0])**3))*(r[i,1]-r[i,0])
         a_s = gravS(r[i,1]-r[i,0])/Sm
-        #a_s = f_s/Sm
 
-        #a_p = (-G*(Sm+p3))/((np.linalg.norm(r[i,1]-r[i,0])**3))*(r[i,1]-r[i,0])
         a_p = gravS(r[i,1]-r[i,0])/p3
-        #a_p = f_p/
 
         vhs = v[i,0] + a_s*dt/2
         vhp = v[i,1] + a_p*dt/2
         
-
         r[i+1,0] = r[i,0] + vhs*dt
         r[i+1,1] = r[i,1] + vhp*dt 
 
@@ -72,5 +67,5 @@ def sim_orbit1(steps,dt):            #Simulation Loop
 r1,v1 = sim_orbit1(119000,0.0002)
 
 plt.plot(r1[:,0,0],r1[:,0,1])
-#plt.plot(r1[:,1,0],r1[:,1,1])
+plt.plot(r1[:,1,0],r1[:,1,1])
 plt.show()
