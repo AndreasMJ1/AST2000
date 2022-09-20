@@ -34,7 +34,7 @@ def gravity(r,pmass):
     return f 
 
 
-def solar_orbit(N,planetindx):
+def solar_orbit(N,planetindx): #N = Antall steg, planetindx = liste med planetIDer
     dt = 0.0002 
     masses = np.zeros(len(planetindx))
     for i in range(len(masses)):
@@ -54,20 +54,31 @@ def solar_orbit(N,planetindx):
         ind = int(masses[i]) 
         p_masses[i] = system.masses[ind]
     sigma_p = 0
+    a_s = np.array([0,0],dtype= 'float64')
     for i in range(len(masses)):
         sigma_p+= v[0,i]*p_masses[i]
+        a_s += (gravity(r[0,i],p_masses[i])/Sm)
     sun_v = np.zeros((N,2))
     sun_v[0] = -sigma_p/Sm
+    print(sun_v[0])
     sun_r = np.zeros((N,2))
 
     for s in trange(N-1):
-        a_s = np.array([0,0],dtype= 'float64') # np.array((1,2),dtype= 'float64')
+        #a_s = np.array([0,0],dtype= 'float64') # np.array((1,2),dtype= 'float64')
+        
         vhs = sun_v[s] +a_s*dt/2
         sun_r[s+1] = sun_r[s] +vhs*dt
         sun_v[s+1] = vhs + a_s*dt/2
+        #print(a_s)
+        if s == 0:
+            pass
+        elif p == len(masses):
+            a_s = np.array([0,0],dtype= 'float64')
+        else:
+            pass
         for p in range(len(masses)):
-            a_s += (gravity(r[s,p],p_masses[p])/Sm)
-
+            a_s += (gravity(r[s,p]-sun_r[s],p_masses[p])/Sm)
+            #print(a_s)
             a = (gravity(r[s,p],p_masses[p])/p_masses[p])
             vh = v[s,p] + a*dt/2
             r[s+1,p] = r[s,p] + vh*dt
@@ -75,13 +86,13 @@ def solar_orbit(N,planetindx):
             v[s+1,p] = vh + a*dt/2
     return sun_r, sun_v, r,v
 
-sun_r, sun_v, r, v = solar_orbit(119000, np.array([0,2,5]))
+sun_r, sun_v, r, v = solar_orbit(119000//2, np.array([0,2,5]))
 
 plt.plot(sun_r[:,0],sun_r[:,1])
-plt.plot(r[:,0,0],r[:,0,1])
-plt.plot(r[:,1,0],r[:,1,1])
-plt.plot(r[:,2,0],r[:,2,1])
-plt.legend(['sun','0','2','5'])
+#plt.plot(r[:,0,0],r[:,0,1])
+#plt.plot(r[:,1,0],r[:,1,1])
+#plt.plot(r[:,2,0],r[:,2,1])
+#plt.legend(['sun','0','2','5'])
 plt.show()
 
 
