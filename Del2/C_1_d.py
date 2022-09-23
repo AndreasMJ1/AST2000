@@ -78,10 +78,11 @@ def sim_orbit1(steps,dt):            #Simulation Loop
 r1,v1 ,kin,pot,tot = sim_orbit1(119000,0.0002)
 t = np.linspace(0,119000*0.0002,119000)
 
-#plt.plot(r1[:,0,0],r1[:,0,1])
-#plt.plot(r1[:,1,0],r1[:,1,1])
-
-print(f"diff ={abs(tot[0]-tot[-1])}")
+plt.plot(r1[:,0,0],r1[:,0,1])
+plt.plot(r1[:,1,0],r1[:,1,1])
+plt.show()
+print(np.max(tot),np.min(tot))
+print(f"diff ={100*abs(((np.max(tot))-(np.min(tot)))/((np.mean(tot))))}%")
 
 plt.plot(t,kin)
 plt.plot(t,pot)

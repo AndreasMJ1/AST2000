@@ -68,10 +68,10 @@ def sim_orbits(steps,dt):            #Simulation Loop
                     push_p[p].append(i)
         
     return r , v , a_chk, cnt,push_p
-"""
+
 color_list = ['Firebrick','Chartreuse','Khaki','Sienna','CornflowerBlue','Teal','Fuchsia']
 
-r,v,a_chk,cnt,push_p = sim_orbits(119000,0.0002)  #Unpacking simulation 
+r,v,a_chk,cnt,push_p = sim_orbits(119150,0.0002)  #Unpacking simulation 
 
 for i in range(7):                                #Plotting Exact solution
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i]
@@ -83,6 +83,7 @@ print((a_chk[0][0],a_chk[7][0],a_chk[0][0]-a_chk[7][0],a_chk[0][1],a_chk[7][1],a
 print(f"Kepler {119000*0.0002/20,np.sqrt(m_ax[0]**3)}")
 print(f"Netwon {119000*0.0002/20,np.sqrt((4*np.pi**2)/(4*np.pi**2*(system.star_mass+system.masses[0]))*m_ax[0]**3),}") #595*0.002
 
+print(system.types)
 
 plt.scatter(0,0,color = 'black')                  #Plotting simulation 
 for i in range(7):
@@ -92,4 +93,7 @@ plt.xlabel('Distance (AU)')
 plt.ylabel('Distance (AU)')
 plt.title('Comparing analytical and numeric calculations')
 plt.show()
-"""
+
+
+rshape = np.reshape(r,(2,7,119150))
+mission.verify_planet_positions(119150*0.0002, rshape)

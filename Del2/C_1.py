@@ -30,42 +30,43 @@ Sm = system.star_mass
 
 def gravS(r:np.asarray): 
     r_norm = np.linalg.norm(r)         #Function for gravity, vectorized
-    a = -G*Sm*p3*(r/(r_norm**3))
+    a = G*Sm*p3*(r/(r_norm**3))
     return a 
 
 def sim_orbit1(steps,dt):            #Simulation Loop
     sv = -(p3*p_vel[1,0])/Sm
     r = np.zeros((steps,2,2))
     v = np.zeros((steps,2,2))
-    r0 = np.array([[0,0],[p_pos[0,0],p_pos[1,0]]])
-    v0 = np.array([[0,-sv],[p_vel[0,0],p_vel[1,0]]])
+    red_mass = Sm*p3/(Sm+p3)
+
+    r0 = np.array([[-p_pos[0,0] *red_mass/Sm,0],[p_pos[0,0]*red_mass/p3,p_pos[1,0]]])
+    v0 = np.array([[0,sv],[p_vel[0,0],p_vel[1,0]]])
     v[0] = v0
     r[0] = r0
     dt = dt
     for i in trange(steps-1):
-        a_s = gravS(r[i,1]-r[i,0])/Sm
-
-        a_p = gravS(r[i,1]-r[i,0])/p3
+        ra = (r[i,1]-r[i,0])
+        
+        a_s = gravS(ra)/Sm
+        a_p = -gravS(ra)/p3
 
         vhs = v[i,0] + a_s*dt/2
         vhp = v[i,1] + a_p*dt/2
         
         r[i+1,0] = r[i,0] + vhs*dt
         r[i+1,1] = r[i,1] + vhp*dt 
-
-        f_s = gravS(r[i+1,1]-r[i+1,0])
-        a_s = f_s/Sm
-
-        f_p = gravS(r[i+1,1]-r[i+1,0])
-        a_p = f_p/p3
+        ra = (r[i+1,1]-r[i+1,0])
+        a_s = gravS(ra)/Sm
+        a_p = -gravS(ra)/p3
 
         v[i+1,0] = vhs + a_s*dt/2
         v[i+1,1] = vhp + a_p*dt/2
-    return r , v 
 
+    return r , v 
 
 r1,v1 = sim_orbit1(119000,0.0002)
 
 plt.plot(r1[:,0,0],r1[:,0,1])
-plt.plot(r1[:,1,0],r1[:,1,1])
+#plt.plot(r1[:,1,0],r1[:,1,1])
+
 plt.show()
