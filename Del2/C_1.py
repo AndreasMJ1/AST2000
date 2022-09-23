@@ -26,7 +26,7 @@ p_vel = system.initial_velocities
 p3 = system.masses[0]
 G = 4*np.pi**2
 Sm = system.star_mass
-
+print(p_pos[1,0])
 
 def gravS(r:np.asarray): 
     r_norm = np.linalg.norm(r)         #Function for gravity, vectorized
@@ -68,5 +68,38 @@ r1,v1 = sim_orbit1(119000,0.0002)
 
 plt.plot(r1[:,0,0],r1[:,0,1])
 #plt.plot(r1[:,1,0],r1[:,1,1])
+"""
+def radial_velocity_curve(N, dt, v_star, v_pec):
+    t = np.linspace(0, N*dt, N)
 
+    V = np.full(N, v_pec[0])                    # the radial component of the peculiar velocity [AU/yr]
+    v_real = v_star[:N, 0] + V                  # the star's true radial velocity [AU/yr]
+
+    plt.plot(t, v_real, color = 'orange', label = 'Sun')
+    plt.plot(t, V, color = 'pink', label = 'Peculiar')
+    plt.title("Our sun's radial velocity relative to the center of mass,\nand the peculiar velocity of our system")
+    plt.xlabel('time [yr]')
+    plt.ylabel('velocity [AU/yr]')
+    plt.legend()
+    plt.show()
+    
+    ''' calculating noise '''
+    
+    my = 0.0                                    # the mean noise
+    sigma = 0.2*np.max(abs(v_real))             # the standard deviation
+    noise = np.random.normal(my, sigma, size = (int(N)))
+    v_obs = v_real + noise                      # the observed radial velocity [AU/yr]
+    
+    plt.plot(t, v_obs, 'k:')
+    plt.plot(t, v_real, 'r')
+    plt.title('The radial velocity curve of our sun with noise')
+    plt.xlabel('time [yr]')
+    plt.ylabel('velocity [AU/yr]')
+    plt.show()
+    
+    return t, v_real, v_obs
+
+t, vr, vo = radial_velocity_curve(1000, 0)
+
+"""
 plt.show()
