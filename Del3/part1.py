@@ -52,4 +52,4 @@ if __name__ == '__main__':
     ### 1.5 
     ts = temps()
     print(ts)     #habitable = #3 , #7
-    flux_rec(utils.AU_to_m(p_pos[0,0]))
+    
