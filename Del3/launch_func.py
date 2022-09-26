@@ -80,14 +80,6 @@ box_mass = particles_per_second*m                     #The total fuel loss per s
 fuel_consume = rocketengine_perf(mean_force)
 
 
-"""
-print('There are {:g} particles exiting the gas box per second.'\
-.format(particles_per_second))
-print('The gas box exerts a thrust of {:g} N.'.format(mean_force))
-print('The box has lost a mass of {:g} kg/s.'.format(box_mass))
-#print(fuel_consume)
-
-"""
 def gravity(r):
     f = (G*homeplanet_mass)/(r**2)
     return f
@@ -124,3 +116,4 @@ if __name__ == '__main__':
     print(time1[-1])
     print(vel)
 
+                               
