@@ -1,3 +1,4 @@
+from statistics import mean
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -17,13 +18,13 @@ k = 1.38064852e-23 #Boltzmann's Constant
 #PHYSICAL VARIABLES
 T = 3e3           #Temperature in Kelvin
 L = 10e-6         #Box Length in meters
-N = 1e5           #Number of particles
+N = 1e6           #Number of particles
 m = 3.3474472e-27 #Mass of individual particle in kg
 G = 6.6743e-11    #Gravitational Constant 
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
-spacecraft_mass = mission.spacecraft_mass*15
+spacecraft_mass = mission.spacecraft_mass*10
 homeplanet_dist = 1.2289822738 #AU
 homeplanet_mass = 1.5616743232192E25 #7.80837162e-06 m_sun
 pos = [homeplanet_dist+utils.km_to_AU(8961.62),0]
@@ -39,7 +40,7 @@ x =  np.random.uniform(0,L, size = (int(N), 3))             # Position vector
 v =  np.random.normal(0,sigma, size = (int(N), 3))          # Velocity vector
 
 #SIMULATION VARIABLES
-r = 10e-9               #Simulation Runtime in Seconds
+r = 1e-9               #Simulation Runtime in Seconds
 steps = 1000               #Number of Steps Taken in Simulation
 dt = r/steps            #Simulation Step Length in Seconds
 
@@ -57,7 +58,7 @@ def particle_sim(x,v,l,exiting,f):
         for j in range(int(N)):
             if s <= x[j][0] <= 3*s and s <= x[j][1] <= 3*s and x[j][2] <= 0:
                 exiting+=1
-                f += v[j][2]*m/dt
+                f += v[j][2]*m
                 x[j] =  np.random.uniform(0,L, size = (1, 3))         # Position vector, fill in uniform distribution in all 3 dimensions
                 v[j] =  np.random.normal(0,sigma, size = (1, 3)) 
             else:
@@ -68,17 +69,20 @@ def particle_sim(x,v,l,exiting,f):
     return x, l, exiting ,f
 
 def rocketengine_perf(mean_force):
-    guess_boxes = 1.6e13
+    guess_boxes = 3.2e13
     fuel_consume = box_mass * guess_boxes      #Consume per second 
     return fuel_consume
 
 x,l,exiting,tf = particle_sim(x,v,l,exiting,f)
 
 particles_per_second = exiting/r              #The number of particles exiting per second
-mean_force = -tf                              #The box force averaged over all r steps
+mean_force = -tf/r                              #The box force averaged over all r steps
 box_mass = particles_per_second*m                     #The total fuel loss per second
 fuel_consume = rocketengine_perf(mean_force)
-
+print(fuel_consume)
+force = mean_force*3.2e13
+print(force)
+print(spacecraft_mass)
 
 def gravity(r):
     f = (G*homeplanet_mass)/(r**2)
@@ -97,7 +101,7 @@ def orbit_launch(F,Mass,fuel):
         fc += fuel_consume  
         
         M = Mass - fc         
-        a = F/M - gravity(dist)
+        a = (F/M) - gravity(dist)
         v = v + a*dt
         dist += v*dt
         pos.append(dist)
@@ -105,15 +109,16 @@ def orbit_launch(F,Mass,fuel):
         time1.append(timer)
         if v < 0:
             break
-    return v , time1, pos 
+    return v , time1, pos , M
 
 if __name__ == '__main__':
-    mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, pos0, 0)
+    mission.set_launch_parameters(force, fuel_consume, spacecraft_mass, 1500, pos0, 0)
     mission.launch_rocket()
 
-    vel, time1, pos = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
+    vel, time1, pos, rm  = orbit_launch(force,spacecraft_mass,fuel_consume)
 
     print(time1[-1])
     print(vel)
+    print(spacecraft_mass, rm)
 
                                

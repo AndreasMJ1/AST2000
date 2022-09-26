@@ -5,7 +5,7 @@ mission.launch_rocket()
 
 
 x,l,exiting,tf = particle_sim(x,v,l,exiting,f)
-vel, time1, pos = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
+vel, time1, pos,spmass = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
 
 print(m)
 fuellc = particles_per_second * 1.6E13*m
