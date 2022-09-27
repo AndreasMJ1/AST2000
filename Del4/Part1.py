@@ -33,21 +33,28 @@ width = len(pixels[0, :])
 
 ### 1.2 
 
-theta = 70 ; phi = 70 
+theta = (70*np.pi)/180 ; phi = (70*np.pi)/180 
 xmax = (2*np.sin(phi/2))/(1+np.cos(phi/2)) ; xmin = -xmax 
 ymax = (2*np.sin(theta/2))/(1+np.cos(theta/2)) ; ymin = -ymax 
 
+x = np.linspace(xmax,xmin,640)
+y = np.linspace(ymax,ymin,480)
+X,Y = np.meshgrid(x,y)
+
+print(Y)
+
+#print(xmax)
 ###
+
 
 def sky_imag():
     colormap = np.load('himmelkule.npy')
     canvas = np.zeros((480,640))
-    width , length = canvas.shape
+    length , width = canvas.shape
     
     for i in range(width):
         for k in range(length):
-
-
-
-
-#mission.get_sky_image_pixel()
+            ind = mission.get_sky_image_pixel(i*xmax,k*ymax)
+            ub,ubr,r,g,b = colormap[ind]
+            canvas[i,k] = [r,g,b]
+            
