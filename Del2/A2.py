@@ -60,7 +60,6 @@ def sim_orbits(steps):
     return r , v , a_chk
 
 
-
 r,v,a_chk = sim_orbits(20000)
 for i in range(7):
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[1])

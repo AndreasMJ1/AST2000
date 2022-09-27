@@ -1,4 +1,3 @@
-rom ast import NotEq
 from math import dist
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,7 +8,7 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-from A1 import analytic_orbits
+
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
@@ -19,6 +18,8 @@ aph_ang = system.aphelion_angles
 m_ax = system.semi_major_axes
 p_pos = system.initial_positions
 p_vel = system.initial_velocities
+p_masses = system.masses
+p_radii = system.radii
 
 
 G = 4*np.pi**2
@@ -71,9 +72,10 @@ def sim_orbits(steps,dt):            #Simulation Loop
 
 color_list = ['Firebrick','Chartreuse','Khaki','Sienna','CornflowerBlue','Teal','Fuchsia']
 
-r,v,a_chk,cnt,push_p = sim_orbits(119150,0.0002)  #Unpacking simulation 
+
 
 if __name__ == '__main__':
+    r,v,a_chk,cnt,push_p = sim_orbits(119150,0.0002)  #Unpacking simulation 
         
     for i in range(7):                                #Plotting Exact solution
         plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119150,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i]

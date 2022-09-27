@@ -8,9 +8,6 @@ from numba import njit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-import sys
-sys.path.append('../')
-
 
 #CONSTANTS
 k = 1.38064852e-23 #Boltzmann's Constant
@@ -18,13 +15,13 @@ k = 1.38064852e-23 #Boltzmann's Constant
 #PHYSICAL VARIABLES
 T = 3e3           #Temperature in Kelvin
 L = 10e-6         #Box Length in meters
-N = 1e6           #Number of particles
+N = 1e5           #Number of particles
 m = 3.3474472e-27 #Mass of individual particle in kg
 G = 6.6743e-11    #Gravitational Constant 
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
-spacecraft_mass = mission.spacecraft_mass*10
+spacecraft_mass = mission.spacecraft_mass*15
 homeplanet_dist = 1.2289822738 #AU
 homeplanet_mass = 1.5616743232192E25 #7.80837162e-06 m_sun
 pos = [homeplanet_dist+utils.km_to_AU(8961.62),0]
@@ -84,12 +81,12 @@ force = mean_force*3.2e13
 print(force)
 print(spacecraft_mass)
 
-def gravity(r):
-    f = (G*homeplanet_mass)/(r**2)
+def gravity(r,m):
+    f = (G*homeplanet_mass*m)/(r**2)
     return f
 
 def orbit_launch(F,Mass,fuel):
-    vesc = np.sqrt((G*2*homeplanet_mass)/(8961.62*1e3))
+    vesc = np.sqrt((G*2*homeplanet_mass)/(8.961621*1E9))
     dist = 8.961621*1E9
     m_time = 500
     steps = 1e4 
@@ -101,7 +98,8 @@ def orbit_launch(F,Mass,fuel):
         fc += fuel_consume  
         
         M = Mass - fc         
-        a = (F/M) - gravity(dist)
+        forc = (F) - gravity(dist,M)
+        a = forc / M
         v = v + a*dt
         dist += v*dt
         pos.append(dist)
