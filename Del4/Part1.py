@@ -25,10 +25,28 @@ p_radii = system.radii
 img = Image.open('Del4\sample0000.png') # Open existing png
 pixels = np.array(img) # png into numpy array
 width = len(pixels[0, :])
-#redpixs = [(255, 0, 0) for i in range(width)] # Array of red pixels
-#pixels[500, :] = redpixs # Insert into line 500
 
-print(width)
-#img2 = Image.fromarray(pixels)
-#img2.save(’exampleWithRedLine.png’) # Make new png
 
+
+### 1.1 
+print(pixels.shape)   
+
+### 1.2 
+
+theta = 70 ; phi = 70 
+xmax = (2*np.sin(phi/2))/(1+np.cos(phi/2)) ; xmin = -xmax 
+ymax = (2*np.sin(theta/2))/(1+np.cos(theta/2)) ; ymin = -ymax 
+
+###
+
+def sky_imag():
+    canvas = np.zeros((480,640))
+    width , length = canvas.shape
+    print(width,length)
+
+    for i in range(1):
+        pass
+
+sky_imag()
+
+#mission.get_sky_image_pixel()
