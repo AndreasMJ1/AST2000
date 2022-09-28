@@ -63,6 +63,6 @@ def sky_imag():
             canvas[i,k] = np.array([r,g,b])
  
     img2 = Image.fromarray(canvas)
-    img2.save('FINTBILDE.png')
+    img2.save('C:/Users/andym/Documents/GitHub/AST2000/Del4/360/FINTBILDE.png')
 
 sky_imag()                 

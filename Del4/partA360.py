@@ -22,7 +22,7 @@ p_masses = system.masses
 p_radii = system.radii
 
 
-img = Image.open('sample0000.png') # Open existing png
+img = Image.open('Del4\sample0000.png') # Open existing png
 pixels = np.array(img) # png into numpy array
 width , length = img.size
 
@@ -41,8 +41,8 @@ x = np.linspace(xmin,xmax,640)
 y = np.linspace(ymax,ymin,480)
 X,Y = np.meshgrid(x,y)
 
-def HVAFAENIHELVETE(X,Y):
-    theta0 =np.pi/2 ; phi0 = 0 
+def HVAFAENIHELVETE(X,Y,phi0):
+    theta0 =np.pi/2 ; phi0 = phi0*np.pi/180 
     ro = np.sqrt(X**2+Y**2)
     beta = 2*np.arctan(ro/2)
     theta = theta0-np.arcsin((np.cos(beta)*np.cos(theta0))+((Y/ro)*np.sin(beta)*np.sin(theta0)))
@@ -50,21 +50,22 @@ def HVAFAENIHELVETE(X,Y):
     return theta , phi 
 
 def sky_imag():
-    theta , phi = HVAFAENIHELVETE(X,Y)
-    colormap = np.load('himmelkule.npy')
+    
+    colormap = np.load('Del4\himmelkule.npy')
     pix = np.array(colormap)
     canvas = np.zeros((length,width,3),dtype ='uint8')
-
-    for i in range(length):
-        for k in range(width):
-            ind = mission.get_sky_image_pixel(theta[i,k],phi[i,k])
-            color = colormap[ind]
-            r = color[2] ;g=  color[3] ; b= color[4]
-            canvas[i,k] = np.array([r,g,b])
+    for a in range(360):
+        theta , phi = HVAFAENIHELVETE(X,Y,a)
+        for i in range(length):
+            if i == (length-1) and k == (width-1):
+                img2 = Image.fromarray(canvas)
+                img2.save(f'C:/Users/andym/Documents/GitHub/AST2000/Del4/360/{a}.png')
+            for k in range(width):
+                ind = mission.get_sky_image_pixel(theta[i,k],phi[i,k])
+                color = colormap[ind]
+                r = color[2] ;g=  color[3] ; b= color[4]
+                canvas[i,k] = np.array([r,g,b])
  
-    img2 = Image.fromarray(canvas)
-    img2.save('FINTBILDE.png')
+    
 
-sky_imag()            
-
-
+sky_imag()                 
