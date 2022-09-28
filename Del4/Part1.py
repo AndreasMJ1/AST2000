@@ -24,7 +24,7 @@ p_radii = system.radii
 
 img = Image.open('Del4\sample0000.png') # Open existing png
 pixels = np.array(img) # png into numpy array
-width = len(pixels[0, :])
+width , length = img.size
 
 
 
@@ -37,7 +37,7 @@ theta = (70*np.pi)/180 ; phi = (70*np.pi)/180
 xmax = (2*np.sin(phi/2))/(1+np.cos(phi/2)) ; xmin = -xmax 
 ymax = (2*np.sin(theta/2))/(1+np.cos(theta/2)) ; ymin = -ymax 
 
-x = np.linspace(xmax,xmin,640)
+x = np.linspace(xmin,xmax,640)
 y = np.linspace(ymax,ymin,480)
 X,Y = np.meshgrid(x,y)
 
@@ -52,17 +52,17 @@ def HVAFAENIHELVETE(X,Y):
 def sky_imag():
     theta , phi = HVAFAENIHELVETE(X,Y)
     colormap = np.load('Del4\himmelkule.npy')
-    canvas = np.zeros((480,640,3))
-    width , length, rgbs = canvas.shape
-    
-    for i in range(width):
-        for k in range(length):
-            for l in range(3):
-                ind = mission.get_sky_image_pixel(theta[i,k],phi[i,k])
-                color = colormap[ind]
-                canvas[i,k,l] = color[l+2]
-    print(canvas)
+    pix = np.array(colormap)
+    canvas = np.zeros((length,width,3),dtype ='uint8')
+
+    for i in range(length):
+        for k in range(width):
+            ind = mission.get_sky_image_pixel(theta[i,k],phi[i,k])
+            color = colormap[ind]
+            r = color[2] ;g=  color[3] ; b= color[4]
+            canvas[i,k] = np.array([r,g,b])
+ 
     img2 = Image.fromarray(canvas)
     img2.save('FINTBILDE.png')
 
-sky_imag()            
+sky_imag()                 
