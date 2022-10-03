@@ -112,15 +112,34 @@ def orbit_launch(F,Mass,fuel):
         time1.append(timer)
         if v < 0:
             break
-    return v , time1, pos 
+    return v , time1, pos
+    
+def orbit_launch1(F,Mass,fuel):
+    dist = 8.961621*1E9
+    dt = 0.1
+    v=0
+    fc = 0
+    timer = 0
+    pos = 0
+    while v <= vesc:
+        fc += fuel_consume*dt
+        mess = Mass - fc 
+        sumf = (F - mess*G)  
+        a = sumf/mess 
+        v = v + a*dt 
+        pos = pos + v*dt 
+        timer += dt 
+        if v < 0:
+            break
+    return v , timer, pos 
 
 if __name__ == '__main__':
     mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, pos0, 0)
     mission.launch_rocket()
 
-    vel, time1, pos = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
+    vel, time1, pos = orbit_launch1(mean_force*1.6e13,spacecraft_mass,fuel_consume)
 
-    print(time1[-1])
+    print(time1)
     print(vel)
 
 
