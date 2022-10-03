@@ -18,6 +18,7 @@ aph_ang = system.aphelion_angles
 m_ax = system.semi_major_axes
 p_pos = system.initial_positions
 p_vel = system.initial_velocities
+print(system.atmospheric_densities)
 
 radius = 8961621.4961
 def flux_rec(dist):
@@ -44,12 +45,16 @@ if __name__ == '__main__':
     print(sqr_m_solarpanel)      
 
     ### 1.3 
-    #flux_rec(r)*2*np.pi*R**2
+    #flux_rec(r)*np.pi*R**2
 
     ### 1.4
-    #temps()
+    temps()
 
     ### 1.5 
     ts = temps()
-    print(ts)     #habitable = #3 , #7
+    for i in range(len(ts)):
+        print(f'Planet {i} |  {ts[i]:.0f}K')
+
+    #print(ts)     #habitable = #2 , #6
+
     
