@@ -61,4 +61,43 @@ def sky_imag():
     return pos[0]
     
 
-print(sky_imag())     
+print(sky_imag())   
+
+def rad_velocit():  
+    def formula(lamb):
+        return (const.c_AU_pr_yr*lamb)/(656.3)
+
+    radvel_sun1 = formula(0.003300753110566649)
+    radvel_sun2 = formula(0.0062612532661168565)
+
+    radvel_plan1 = formula(0)
+    radvel_plan2 = formula(0)
+
+    ang1 = mission.star_direction_angles[0]*np.pi/180
+    ang2 = mission.star_direction_angles[1]*np.pi/180
+    
+    kart = 1/np.sin(ang2-ang1)*np.array(([np.sin(ang2),-np.sin(ang1)],[-np.cos(ang2),np.cos(ang1)]))
+    x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
+    return x,y 
+
+x,y = rad_velocit()
+
+
+
+
+def rad_velocit1(lamds):  
+    def formula(lamb):
+        return (const.c_AU_pr_yr*lamb)/(656.3)
+
+    radvel_sun1 = formula(0.003300753110566649)
+    radvel_sun2 = formula(0.0062612532661168565)
+
+    radvel_plan1 = formula(lamds)
+    radvel_plan2 = formula(lamds)
+
+    ang1 = mission.star_direction_angles[0]*np.pi/180
+    ang2 = mission.star_direction_angles[1]*np.pi/180
+    
+    kart = 1/np.sin(ang2-ang1)*np.array(([np.sin(ang2),-np.sin(ang1)],[-np.cos(ang2),np.cos(ang1)]))
+    x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
+    return x,y 
