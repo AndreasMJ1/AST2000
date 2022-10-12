@@ -21,7 +21,7 @@ p_vel = system.initial_velocities
 p_masses = system.masses
 p_radii = system.radii
 
-img = Image.open('23.png') # Open existing png
+img = Image.open('Del4/360/23.png') # Open existing png
 pixels = np.array(img) # png into numpy array
 width , length = img.size
 
@@ -42,7 +42,7 @@ def HVAFAENIHELVETE(X,Y,phi0):
     return theta , phi 
 
 def sky_imag():
-    colormap = np.load('himmelkule.npy')
+    colormap = np.load('Del4\himmelkule.npy')
     pix = np.array(colormap)
     canvas = np.zeros((length,width,3),dtype ='uint8')
     error = np.zeros(360)
@@ -59,11 +59,10 @@ def sky_imag():
     ang = np.min(error)
     pos = np.where(ang == error)[0]
     return pos[0]
-    
-
-print(sky_imag())   
+      
 
 def rad_velocit():  
+
     def formula(lamb):
         return (const.c_AU_pr_yr*lamb)/(656.3)
 
@@ -78,26 +77,39 @@ def rad_velocit():
     
     kart = 1/np.sin(ang2-ang1)*np.array(([np.sin(ang2),-np.sin(ang1)],[-np.cos(ang2),np.cos(ang1)]))
     x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
+
     return x,y 
 
 x,y = rad_velocit()
 
-
-
-
-def rad_velocit1(lamds):  
-    def formula(lamb):
-        return (const.c_AU_pr_yr*lamb)/(656.3)
-
-    radvel_sun1 = formula(0.003300753110566649)
-    radvel_sun2 = formula(0.0062612532661168565)
-
-    radvel_plan1 = formula(lamds)
-    radvel_plan2 = formula(lamds)
-
-    ang1 = mission.star_direction_angles[0]*np.pi/180
-    ang2 = mission.star_direction_angles[1]*np.pi/180
+def lambda_to_velocity(lamds,phi):
+    l0 = 656.3
+    v = const.c*(lamds-l0)/l0
+    vx = np.cos(phi)*v
+    vy = np.sin(phi)*v
+    return vx,vy
     
-    kart = 1/np.sin(ang2-ang1)*np.array(([np.sin(ang2),-np.sin(ang1)],[-np.cos(ang2),np.cos(ang1)]))
-    x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
-    return x,y 
+def trilateration(pos,n):
+    pos_array = pos 
+    phi = np.linspace(0,2*np.pi,n)
+    p1 = pos_array[:,0] ; p2 = pos_array[:,1] ; p3 = pos_array[:,2]
+    r = mission.measure_distances
+    r1 = r[0] ; r2 = r[1] ; r3 = r[2]
+    p1a = np.zeros(n) ; p2a = np.zeros(n) ; p3a = np.zeros(n)
+
+    for i in range(n):
+        p = phi[i]
+        p1a[i] = (p1+np.array((r1*np.cos(p),r1*np.sin(p))))
+        p2a[i] = (p2+np.array((r2*np.cos(p),r2*np.sin(p))))
+        p3a[i] = (p3+np.array((r3*np.cos(p),r3*np.sin(p))))
+    
+    ang1 = np.isclose(p1a,p2a) ; ang2 = np.isclose(p1a,p3a)
+    ang = np.where(ang1==ang2)
+    pos = p1+ang*r1
+    return pos 
+
+#lambda_to_velocity(lambds,angle(phi))
+
+#trilateration(##planetpositions,400)
+
+print(x,y)
