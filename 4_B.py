@@ -105,7 +105,7 @@ def trilateration(pos,n):
     
     ang1 = np.isclose(p1a,p2a) ; ang2 = np.isclose(p1a,p3a)
     ang = np.where(ang1==ang2)
-    pos = p1+ang*r1
+    pos = np.array((p1[0]+np.cos(ang)*r1,p1[1]+np.sin(ang)*r1))
     return pos 
 
 #lambda_to_velocity(lambds,angle(phi))
