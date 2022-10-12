@@ -78,7 +78,7 @@ def rad_velocit():
     kart = 1/np.sin(ang2-ang1)*np.array(([np.sin(ang2),-np.sin(ang1)],[-np.cos(ang2),np.cos(ang1)]))
     x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
 
-    return x,y 
+    return x , y 
 
 x,y = rad_velocit()
 
@@ -112,4 +112,4 @@ def trilateration(pos,n):
 
 #trilateration(##planetpositions,400)
 
-print(x,y)
+print(x[0],y[0])

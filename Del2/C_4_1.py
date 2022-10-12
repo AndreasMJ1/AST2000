@@ -1,6 +1,5 @@
 from ast import NotEq
 from lib2to3.pytree import type_repr
-from math import dist
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -37,6 +36,7 @@ def gravity(r,pmass):
 
 def solar_orbit(N,planetindx): #N = Antall steg, planetindx = liste med planetIDer
     dt = 0.0002 
+    #dt = 0.0238
     masses = np.zeros(len(planetindx))
     for i in range(len(masses)):
         masses[i] = planetindx[i]
@@ -101,15 +101,21 @@ def solar_orbit(N,planetindx): #N = Antall steg, planetindx = liste med planetID
             v[s+1,p] = vh - a*dt/2
     return sun_r, sun_v, r,v
 
-sun_r, sun_v, r, v = solar_orbit(119000, np.array([0,1,2,3,4,5]))
+sun_r, sun_v, r, v = solar_orbit(120000, np.array([0,1,2,3,4,5,6]))
 
 plt.plot(sun_r[:,0],sun_r[:,1])
 for i in range(len(r[0,:,0])):
     plt.plot(r[:,i,0],r[:,i,1])
 
+#np.save('positions.npy',r)
+#np.save('sun_position.npy',sun_r)
+#np.save('velocities.npy',v)
+#np.save('sun_velocity.npy',sun_v)
 
-plt.legend(['sun','0','2','5'])
+#plt.legend(['sun','0','2','5'])
+rnew = np.reshape(r,(2,7,120000))
 plt.show()
+#mission.verify_planet_positions(24.0,rnew)
 
 
 
