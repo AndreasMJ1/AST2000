@@ -8,7 +8,7 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-from A_1 import analytic_orbits
+from A1 import analytic_orbits
 seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
@@ -64,7 +64,7 @@ r,v,a_chk = sim_orbits(20000)
 for i in range(7):
     plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[1])
 
-print(a_chk)
+
 plt.scatter(0,0)
 plt.plot(r[:,0,0],r[:,0,1])
 plt.plot(r[:,1,0],r[:,1,1])

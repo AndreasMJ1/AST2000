@@ -7,14 +7,9 @@ from numba import njit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-import sys
-sys.path.append('../')
 
 
-#CONSTANTS
 k = 1.38064852e-23 #Boltzmann's Constant
-
-#PHYSICAL VARIABLES
 T = 3e3           #Temperature in Kelvin
 L = 10e-6         #Box Length in meters
 N = 1e5           #Number of particles
@@ -72,22 +67,17 @@ def rocketengine_perf(mean_force):
     fuel_consume = box_mass * guess_boxes      #Consume per second 
     return fuel_consume
 
+def rocket_thrust(force,consumption,mass,boost):
+    pass
+
 x,l,exiting,tf = particle_sim(x,v,l,exiting,f)
 
-particles_per_second = exiting/r              #The number of particles exiting per second
-mean_force = -tf                              #The box force averaged over all r steps
-box_mass = particles_per_second*m                     #The total fuel loss per second
+particles_per_second = exiting/r              
+mean_force = -tf                              
+box_mass = particles_per_second*m                     
 fuel_consume = rocketengine_perf(mean_force)
 
 
-"""
-print('There are {:g} particles exiting the gas box per second.'\
-.format(particles_per_second))
-print('The gas box exerts a thrust of {:g} N.'.format(mean_force))
-print('The box has lost a mass of {:g} kg/s.'.format(box_mass))
-#print(fuel_consume)
-
-"""
 def gravity(r):
     f = (G*homeplanet_mass)/(r**2)
     return f

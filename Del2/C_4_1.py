@@ -107,10 +107,10 @@ plt.plot(sun_r[:,0],sun_r[:,1])
 for i in range(len(r[0,:,0])):
     plt.plot(r[:,i,0],r[:,i,1])
 
-#np.save('positions.npy',r)
-#np.save('sun_position.npy',sun_r)
-#np.save('velocities.npy',v)
-#np.save('sun_velocity.npy',sun_v)
+np.save('positions.npy',r)
+np.save('sun_position.npy',sun_r)
+np.save('velocities.npy',v)
+np.save('sun_velocity.npy',sun_v)
 
 #plt.legend(['sun','0','2','5'])
 rnew = np.reshape(r,(2,7,120000))
