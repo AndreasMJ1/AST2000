@@ -52,7 +52,11 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
     for i in trange(steps):
         force = grav_planets(r[i],mass,t_ind+i) + grav_star(r[i],mass)
         a = force/mass
+<<<<<<< Updated upstream
         vh = v[i] +a*dt/2
+=======
+        vh = v[i] + a*dt/2
+>>>>>>> Stashed changes
         r[i+1] = r[i] + vh*dt
         force = grav_planets(r[i+1],mass,t_ind+i) + grav_star(r[i+1],mass)
         a = force/mass
