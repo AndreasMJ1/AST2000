@@ -76,6 +76,7 @@ particles_per_second = exiting/r
 mean_force = -tf                              
 box_mass = particles_per_second*m                     
 fuel_consume = rocketengine_perf(mean_force)
+print(mean_force,fuel_consume)
 
 
 def gravity(r):
@@ -84,7 +85,7 @@ def gravity(r):
 
 def orbit_launch(F,Mass,fuel):
     vesc = np.sqrt((G*2*homeplanet_mass)/(8961.62*1e3))
-    dist = 8.961621*1E9
+    dist = 8.961621*1E6
     m_time = 500
     steps = 1e4 
     dt = m_time/steps 
@@ -109,10 +110,22 @@ if __name__ == '__main__':
     mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, pos0, 0)
     mission.launch_rocket()
 
+    radius = 8961.62*1e3
+    vy0 = utils.AU_pr_yr_to_m_pr_s(system.initial_velocities[0,1])
+    rotv = 2*np.pi*radius/(system.rotational_periods[0])
     vel, time1, pos = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
 
+    x = utils.m_to_AU(pos[-1])  + pos0[0]
+    y = (vy0 - (rotv)) *time1[-1] 
+    y1 = utils.m_to_AU(y)
+
+    print(x,y1)
+    position = np.array([x,y1])
+
     print(time1[-1])
-    print(vel)
+
+    mission.verify_launch_result(position)
+    
 
 
 
