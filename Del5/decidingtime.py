@@ -69,13 +69,13 @@ if __name__ == '__main__':
     plt.scatter(r[3125,0,0],r[3125,0,1])
     plt.scatter(r[3125,2,0],r[3125,2,1])
     plt.plot((r[3125,0,0],r[3125,2,0]),(r[3125,0,1],r[3125,2,1]))
-    plt.plot((r[3125,0,0],-2.553395567453452),(r[3125,0,1],-0.6256078449131184),linestyle='dotted')
+    plt.plot((r[3125,0,0],-2.553395567453452),(r[3125,0,1],-0.6256078449131184), linestyle='dotted')
     plt.show()
     
 
     planet_diff = abs(r[:,0]- r[:,2])
     ping = np.min(planet_diff)
-    least = np.where(planet_diff ==ping)
+    least = np.where(planet_diff == ping)
 
     #rshape = np.reshape(r,(2,7,119150))
     #mission.verify_planet_positions(119150*0.0002, rshape)
