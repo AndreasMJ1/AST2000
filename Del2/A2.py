@@ -1,3 +1,4 @@
+from ast import NotEq
 from math import dist
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,33 +24,38 @@ p_vel = system.initial_velocities
 G = 4*np.pi**2
 Sm = system.star_mass
 
-def grav(r):
-    r_norm = np.linalg.norm(r)
+def grav(r): 
+    r_norm = np.linalg.norm(r)         #Function for gravity, vectorized
     a = -G*Sm*(r/(r_norm**3))
     return a 
 
 v0 = np.array([[p_vel[0,0],p_vel[1,0]],[p_vel[0,1],p_vel[1,1]],[p_vel[0,2],p_vel[1,2]],[p_vel[0,3],p_vel[1,3]],
-     [p_vel[0,4],p_vel[1,4]],[p_vel[0,5],p_vel[1,5]],[p_vel[0,6],p_vel[1,6]]])
-r0 = np.array([[p_pos[0,0],p_pos[1,0]],[p_pos[0,1],p_pos[1,1]],[p_pos[0,2],p_pos[1,2]],[p_pos[0,3],p_pos[1,3]],
-           [p_pos[0,4],p_pos[1,4]],[p_pos[0,5],p_pos[1,5]],[p_pos[0,6],p_pos[1,6]]])
+     [p_vel[0,4],p_vel[1,4]],[p_vel[0,5],p_vel[1,5]],[p_vel[0,6],p_vel[1,6]]]) #Init values
 
-def sim_orbits(steps):
+r0 = np.array([[p_pos[0,0],p_pos[1,0]],[p_pos[0,1],p_pos[1,1]],[p_pos[0,2],p_pos[1,2]],[p_pos[0,3],p_pos[1,3]],
+           [p_pos[0,4],p_pos[1,4]],[p_pos[0,5],p_pos[1,5]],[p_pos[0,6],p_pos[1,6]]]) #Init values 
+
+def sim_orbits(steps,dt):            #Simulation Loop
     r = np.zeros((steps,7,2))
     v = np.zeros((steps,7,2))
     v[0] = v0
     r[0] = r0
-    dt = 0.002
+    dt = dt
     a_chk = []
+    cnt = 0
+    push_p = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}
     for i in trange(steps-1):
         for p in range(7):
-            if i == 0 or int(steps/2):
+            if i == 0 or i == int(steps/4):
                 a = grav(r[i,p])
                 vh = v[i,p] + a*dt/2 
                 r[i+1,p] = r[i,p] + vh*dt 
                 a = grav(r[i+1,p])
                 v[i+1,p] = vh + a*dt/2
-                areal = np.linalg.norm((r[i,0,:]+r[i+1,0,:])/2) * np.linalg.norm((r[i+1,0,:]-r[i,0,:]))
-                a_chk.append(areal)
+                areal = (np.linalg.norm((r[i,p,:]+r[i+1,p,:])/2) * np.linalg.norm((r[i+1,p,:]-r[i,p,:])))/2
+                dist = np.linalg.norm((r[i+1,p,:]-r[i,p,:]))
+                vel = dist/dt
+                a_chk.append([areal,dist,vel])
 
             else: 
                 a = grav(r[i,p])
@@ -57,47 +63,38 @@ def sim_orbits(steps):
                 r[i+1,p] = r[i,p] + vh*dt 
                 a = grav(r[i+1,p])
                 v[i+1,p] = vh + a*dt/2
-    return r , v , a_chk
+                if np.sign(r[i,p,1]) != np.sign(r[i+1,p,1]):
+                    cnt +=1
+                    push_p[p].append(i)
+        
+    return r , v , a_chk, cnt,push_p
+
+color_list = ['Firebrick','Chartreuse','Khaki','Sienna','CornflowerBlue','Teal','Fuchsia']
+
+r,v,a_chk,cnt,push_p = sim_orbits(119150,0.0002)  #Unpacking simulation 
+
+if __name__ == '__main__':
+        
+    for i in range(7):                                #Plotting Exact solution
+        plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],119150,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i]
+        ,119150,p_pos[0][i],p_pos[1][i])[1],linestyle='dotted',color = f'{color_list[i]}')
+
+    print((a_chk[0][0],a_chk[7][0],a_chk[0][0]-a_chk[7][0],a_chk[0][1],a_chk[7][1],a_chk[0][2],a_chk[7][2])) #(-8.282099940755405e-12, 0.0012898681485006699, 0.0012898732900769251, 6.449340742503349, 6.449366450384625)
 
 
-r,v,a_chk = sim_orbits(20000)
-for i in range(7):
-    plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],20000,p_pos[0][i],p_pos[1][i])[1])
+    print(f"Kepler {119150*0.0002/20,np.sqrt(m_ax[0]**3)}")
+    print(f"Netwon {119150*0.0002/20,np.sqrt((4*np.pi**2)/(4*np.pi**2*(system.star_mass+system.masses[0]))*m_ax[0]**3),}") #595*0.002
 
+    print(system.types)
 
-plt.scatter(0,0)
-plt.plot(r[:,0,0],r[:,0,1])
-plt.plot(r[:,1,0],r[:,1,1])
-plt.plot(r[:,2,0],r[:,2,1])
-plt.plot(r[:,3,0],r[:,3,1])
-plt.plot(r[:,4,0],r[:,4,1])
-plt.plot(r[:,5,0],r[:,5,1])
-plt.plot(r[:,6,0],r[:,6,1])
-plt.show()
+    plt.scatter(0,0,color = 'black')                  #Plotting simulation 
+    for i in range(7):
+        plt.plot(r[:,i,0],r[:,i,1],color = f'{color_list[i]}')
+    plt.legend(['0','1','2','3','4','5','6'])
+    plt.xlabel('Distance (AU)')
+    plt.ylabel('Distance (AU)')
+    plt.title('Comparing analytical and numeric calculations')
+    plt.show()
 
-
-
-"""
-def al(r):
-    a = -G*Sm*(r/(np.linalg.norm(r)**3))
-    return a 
-
-def sim(n):
-    v = np.zeros((n,2))
-    r = np.zeros((n,2))
-    v[0]= [p_vel[0,0], p_vel[1,0]]
-    r[0] = [p_pos[0,0],p_pos[1,0]]
-    dt = 1/n
-    for i in range(n-1):
-        a = al(r[i])
-        vh = v[i] + a*dt/2
-        r[i+1] = r[i] +vh*dt 
-        v[i+1] = vh + al(r[i+1])*dt
-
-    return v, r 
-
-v,r = sim(10000)
-print(al(r[0]))
-plt.plot(r[:,0],r[:,1])
-plt.show()
-"""
+    rshape = np.reshape(r,(2,7,119150))
+    mission.verify_planet_positions(119150*0.0002, rshape)
