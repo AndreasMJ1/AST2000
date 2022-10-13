@@ -11,8 +11,9 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-
+from PartA import spacecraft_traj
 seed = utils.get_seed('andrmj')
+
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
@@ -22,7 +23,7 @@ m_ax = system.semi_major_axes
 p_pos = system.initial_positions
 p_vel = system.initial_velocities
 
-
+plt.style.use('dark_background')
 G = 4*np.pi**2
 Sm = system.star_mass
 
@@ -58,10 +59,10 @@ color_list = ['Firebrick','Chartreuse','Khaki','Sienna','CornflowerBlue','Teal',
 r,v = sim_orbits(3126,0.0002)                         #Unpacking simulation 
 
 if __name__ == '__main__':
-
+    plan_pos = np.load('positions.npy')
     plt.scatter(0,0,color = 'black')                  #Plotting simulation 
-    for i in range(7):
-        plt.plot(r[:,i,0],r[:,i,1],color = f'{color_list[i]}')
+    plt.plot(r[:,0,0],r[:,0,1])
+    plt.plot(r[:,2,0],r[:,2,1])
     plt.legend(['0','1','2','3','4','5','6'])
     plt.xlabel('Distance (AU)')
     plt.ylabel('Distance (AU)')
@@ -69,13 +70,23 @@ if __name__ == '__main__':
     plt.scatter(r[3125,0,0],r[3125,0,1])
     plt.scatter(r[3125,2,0],r[3125,2,1])
     plt.plot((r[3125,0,0],r[3125,2,0]),(r[3125,0,1],r[3125,2,1]))
-    plt.plot((r[3125,0,0],-2.553395567453452),(r[3125,0,1],-0.6256078449131184), linestyle='dotted')
+    #plt.plot((r[3125,0,0],-2.553395567453452),(r[3125,0,1],-0.6256078449131184), linestyle='dotted')
+    plt.scatter(plan_pos[6125,2,0],plan_pos[6125,2,1])
+    #print(plan_pos)
+    r0 = plan_pos[3125,0]
+    r,v = spacecraft_traj(3125,r0,np.array((-3.5760005429,-6.31753332257920436)),0.6,0.0002)
+
+    plt.plot(r[:,0],r[:,1])
+    
+
     plt.show()
     
 
     planet_diff = abs(r[:,0]- r[:,2])
     ping = np.min(planet_diff)
     least = np.where(planet_diff == ping)
+
+
 
     #rshape = np.reshape(r,(2,7,119150))
     #mission.verify_planet_positions(119150*0.0002, rshape)

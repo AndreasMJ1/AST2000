@@ -60,11 +60,13 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
     
     return r,v
 
-plan_pos = np.load('positions.npy')
-#print(plan_pos)
-r0 = plan_pos[100,0]
-r,v = spacecraft_traj(100,r0,np.array((1.0760005429,0.31753332257920436)),0.2,0.0002)
+if __name__ =='__main__':
 
-plt.plot(r[:,0],r[:,1])
-plt.show()
+    plan_pos = np.load('positions.npy')
+    #print(plan_pos)
+    r0 = plan_pos[100,0]
+    r,v = spacecraft_traj(100,r0,np.array((1.0760005429,0.31753332257920436)),0.2,0.0002)
+
+    plt.plot(r[:,0],r[:,1])
+    plt.show()
 

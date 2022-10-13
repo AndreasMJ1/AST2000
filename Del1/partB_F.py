@@ -112,11 +112,11 @@ if __name__ == '__main__':
 
     radius = 8961.62*1e3
     vy0 = utils.AU_pr_yr_to_m_pr_s(system.initial_velocities[0,1])
-    rotv = 2*np.pi*radius/(system.rotational_periods[0])
+    rotv = 2*np.pi*radius/(utils.day_to_s(system.rotational_periods[0]))
     vel, time1, pos = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
 
-    x = utils.m_to_AU(pos[-1])  + pos0[0]
-    y = (vy0 - (rotv)) *time1[-1] 
+    x = utils.m_to_AU(pos[-1])*(time1[-1]/400)  + pos0[0]
+    y = (vy0 +(rotv)) *time1[-1]
     y1 = utils.m_to_AU(y)
 
     print(x,y1)
