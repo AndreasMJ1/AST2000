@@ -55,7 +55,7 @@ def sim_orbits(steps,dt):            #Simulation Loop
 
 color_list = ['Firebrick','Chartreuse','Khaki','Sienna','CornflowerBlue','Teal','Fuchsia']
 
-r,v = sim_orbits(3126,0.0002)  #Unpacking simulation 
+r,v = sim_orbits(3126,0.0002)                         #Unpacking simulation 
 
 if __name__ == '__main__':
 
