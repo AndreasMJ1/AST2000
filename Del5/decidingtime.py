@@ -70,10 +70,9 @@ if __name__ == '__main__':
     plt.scatter(r[3125,0,0],r[3125,0,1])
     plt.scatter(r[3125,2,0],r[3125,2,1])
     plt.plot((r[3125,0,0],r[3125,2,0]),(r[3125,0,1],r[3125,2,1]))
-    #plt.plot((r[3125,0,0],-2.553395567453452),(r[3125,0,1],-0.6256078449131184), linestyle='dotted')
     plt.scatter(plan_pos[6125,2,0],plan_pos[6125,2,1])
-    #print(plan_pos)
-    r0 = plan_pos[3125,0]
+
+
     r,v = spacecraft_traj(3125,r0,np.array((-3.5760005429,-6.31753332257920436)),0.6,0.0002)
 
     plt.plot(r[:,0],r[:,1])
@@ -82,7 +81,7 @@ if __name__ == '__main__':
     plt.show()
     
 
-    planet_diff = abs(r[:,0]- r[:,2])
+    planet_diff = abs(r[:,0] - r[:,2])
     ping = np.min(planet_diff)
     least = np.where(planet_diff == ping)
 
