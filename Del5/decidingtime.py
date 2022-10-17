@@ -63,16 +63,16 @@ if __name__ == '__main__':
     plt.scatter(0,0,color = 'black')                  #Plotting simulation 
     plt.plot(r[:,0,0],r[:,0,1])
     plt.plot(r[:,2,0],r[:,2,1])
-    plt.legend(['0','1','2','3','4','5','6'])
+    plt.legend(['0','2'])
     plt.xlabel('Distance (AU)')
     plt.ylabel('Distance (AU)')
-    plt.title('Comparing analytical and numeric calculations')
+
     plt.scatter(r[3125,0,0],r[3125,0,1])
     plt.scatter(r[3125,2,0],r[3125,2,1])
     plt.plot((r[3125,0,0],r[3125,2,0]),(r[3125,0,1],r[3125,2,1]))
     plt.scatter(plan_pos[6125,2,0],plan_pos[6125,2,1])
 
-
+    r0 = plan_pos[3125,0]
     r,v = spacecraft_traj(3125,r0,np.array((-3.5760005429,-6.31753332257920436)),0.6,0.0002)
 
     plt.plot(r[:,0],r[:,1])

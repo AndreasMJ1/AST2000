@@ -89,27 +89,34 @@ def lambda_to_velocity(lamds,phi):
     vy = np.sin(phi)*v
     return vx,vy
     
-def trilateration(pos,n):
-    pos_array = pos 
+def trilateration(n):
+    pos_array = np.load('positions.npy')
+    #pos_array = pos 
     phi = np.linspace(0,2*np.pi,n)
     p1 = pos_array[:,0] ; p2 = pos_array[:,1] ; p3 = pos_array[:,2]
-    r = mission.measure_distances
+    r = [7.72132697e-05, 1.79367718e+00, 3.47346493e+00, 1.02491348e+01,
+        5.82380116e+00, 4.86591760e+00, 2.80520828e+00, 1.22905947e+00]
+
     r1 = r[0] ; r2 = r[1] ; r3 = r[2]
-    p1a = np.zeros(n) ; p2a = np.zeros(n) ; p3a = np.zeros(n)
+    p1a = np.zeros((n,2)) ; p2a = np.zeros((n,2)) ; p3a = np.zeros((n,2))
 
     for i in range(n):
         p = phi[i]
-        p1a[i] = (p1+np.array((r1*np.cos(p),r1*np.sin(p))))
-        p2a[i] = (p2+np.array((r2*np.cos(p),r2*np.sin(p))))
-        p3a[i] = (p3+np.array((r3*np.cos(p),r3*np.sin(p))))
-    
-    ang1 = np.isclose(p1a,p2a) ; ang2 = np.isclose(p1a,p3a)
-    ang = np.where(ang1==ang2)
-    pos = np.array((p1[0]+np.cos(ang)*r1,p1[1]+np.sin(ang)*r1))
-    return pos 
+        p1a[i] = (p1[1]+np.array((r1*np.cos(p),r1*np.sin(p))))
+        p2a[i] = (p2[1]+np.array((r2*np.cos(p),r2*np.sin(p))))
+        p3a[i] = (p3[1]+np.array((r3*np.cos(p),r3*np.sin(p))))
+
+    anq = (np.linalg.norm(p1a-p2a)) ; anq1 = np.linalg.norm((p1a-p3a))
+
+    where = anq.argmin() ; fin1 = anq1.argmin()
+    ang = 2*np.pi*where/400
+    print((p1[0,0]))
+    pos = np.array((p1[0,0]+np.cos(ang)*r1,p1[0,1]+r1*np.sin(ang)))
+    return pos
+
 
 #lambda_to_velocity(lambds,angle(phi))
 
-#trilateration(##planetpositions,400)
+print(trilateration(400))
 
-print(x[0],y[0])
+#print(x[0],y[0])

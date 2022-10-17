@@ -127,6 +127,10 @@ if __name__ == '__main__':
     #print(time1[-1])
     exac_pos = [1.22905961e+00, 8.38221473e-05]
     mission.verify_launch_result(exac_pos) # [1.22905961e+00 8.38221473e-05]
+
+    #print(mission.measure_distances())
+    mission.verify_manual_orientation(exac_pos,[2.82005178 ,6.58920755],0 ) # 66.830023664
+    mission.begin_interplanetary_travel()
     
 
 
