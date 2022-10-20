@@ -109,8 +109,8 @@ def trilateration(n):
     anq = (np.linalg.norm(p1a-p2a)) ; anq1 = np.linalg.norm((p1a-p3a))
 
     where = anq.argmin() ; fin1 = anq1.argmin()
-    ang = 2*np.pi*where/400
-    print((p1[0,0]))
+    ang = 2*np.pi*where/n
+
     pos = np.array((p1[0,0]+np.cos(ang)*r1,p1[0,1]+r1*np.sin(ang)))
     return pos
 

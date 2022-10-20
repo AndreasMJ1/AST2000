@@ -69,5 +69,5 @@ if __name__ =='__main__':
 
     plt.plot(r[:,0],r[:,1])
     plt.show()
-    mission.begin_interplanetary_travel()
+    
 

@@ -21,11 +21,13 @@ system = SolarSystem(seed)
 spacecraft_mass = mission.spacecraft_mass*15
 homeplanet_dist = 1.2289822738 #AU
 homeplanet_mass = 1.5616743232192E25 #7.80837162e-06 m_sun
-pos = [homeplanet_dist+utils.km_to_AU(8961.62),0]
+radius = system.radii[0]
+
+pos1 = [homeplanet_dist+utils.km_to_AU(radius),0]
 vel = []
 time1 = []
 
-pos0 = np.array([homeplanet_dist+utils.km_to_AU(8961.62),0])
+pos0 = np.array([homeplanet_dist+utils.km_to_AU(radius),0])
 
 #INITIAL CONDITIONS
 sigma =  np.sqrt((k*T)/m)    #The standard deviation of our particle velocities
@@ -80,57 +82,60 @@ fuel_consume = rocketengine_perf(mean_force)
 
 
 def gravity(r):
-    f = (G*homeplanet_mass)/(r**2)
+    f = -(G*homeplanet_mass)/(r**2)
     return f
 
 def orbit_launch(F,Mass,fuel):
-    vesc = np.sqrt((G*2*homeplanet_mass)/(8.961621*1E6))
-    dist = 8.961621*1E6
-    m_time = 500
-    steps = 1e4 
-    #dt = m_time/steps 
+    vesc = np.sqrt((G*2*homeplanet_mass)/((radius*1e3)))
+    dist = (radius*1e3)
     dt = 0.001
     v=0
     fc = 0
     timer = 0
+    pos= []
     while v <= vesc:
+        
         fc += fuel_consume*dt  
         
         M = Mass - fc         
-        a = F/M - gravity(dist)
+        a = F/M + gravity(dist)
         v = v + a*dt
         dist += v*dt
         pos.append(dist)
         timer += dt
-        time1.append(timer)
+        vesc = np.sqrt((G*2*homeplanet_mass)/(dist))
         if v < 0:
             break
-    return v , time1, pos 
+    return v , timer, pos ,dist
 
 if __name__ == '__main__':
     mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, pos0, 0)
-    mission.launch_rocket()
+    mission.launch_rocket(0.001)
     #print(mean_force*1.6e13,fuel_consume,spacecraft_mass)
-    radius = 8.961621*1E6
+    
+    
     vy0 = utils.AU_pr_yr_to_m_pr_s(system.initial_velocities[1,0])
 
-    rotv = 2*np.pi*radius/(utils.day_to_s(system.rotational_periods[0]))
-    vel, time1, pos = orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
-    x1 = pos[-1]*(75/time1[-1])
+    rotv = 2*np.pi*radius*1e3/(utils.day_to_s(system.rotational_periods[0]))
+    vel, time, pos ,dist= orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
+    #x1 = pos[-1]*(89/time1[-1])
+    x1 = dist
     x = utils.m_to_AU(x1)  + pos0[0]
     y = (vy0 +rotv) *(401.44)
     y1 = utils.m_to_AU(y)
 
     print(x,y1)
     position = np.array([x,y1])
-
-    #print(time1[-1])
+    print(time)
+    print(utils.AU_to_m(5.2939e-05))
     exac_pos = [1.22905961e+00, 8.38221473e-05]
-    mission.verify_launch_result(exac_pos) # [1.22905961e+00 8.38221473e-05]
+    mission.verify_launch_result(position) # [1.22905961e+00 8.38221473e-05]
+
+
 
     #print(mission.measure_distances())
-    mission.verify_manual_orientation(exac_pos,[2.82005178 ,6.58920755],0 ) # 66.830023664
-    mission.begin_interplanetary_travel()
+    #mission.verify_manual_orientation(exac_pos,[2.82005178 ,6.58920755],0.003908) # 66.830023664
+    #mission.begin_interplanetary_travel()
     
 
 
