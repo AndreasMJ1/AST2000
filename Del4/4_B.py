@@ -33,7 +33,7 @@ x = np.linspace(xmin,xmax,640)
 y = np.linspace(ymax,ymin,480)
 X,Y = np.meshgrid(x,y)
 
-def HVAFAENIHELVETE(X,Y,phi0):
+def grid(X,Y,phi0):
     theta0 =np.pi/2 ; phi0 = phi0*np.pi/180 
     ro = np.sqrt(X**2+Y**2)
     beta = 2*np.arctan(ro/2)
@@ -41,13 +41,16 @@ def HVAFAENIHELVETE(X,Y,phi0):
     phi = phi0 + np.arctan((X*np.sin(beta))/((ro*np.sin(theta0)*np.cos(beta))-(Y*np.cos(theta0)*np.sin(beta))))
     return theta , phi 
 
-def sky_imag():
+
+def sky_imag(picture):
+    img = Image.open(picture)
+    pixels = np.array(img)
     colormap = np.load('Del4\himmelkule.npy')
     pix = np.array(colormap)
     canvas = np.zeros((length,width,3),dtype ='uint8')
     error = np.zeros(360)
     for a in trange(360):
-        theta , phi = HVAFAENIHELVETE(X,Y,a)
+        theta , phi = grid(X,Y,a)
         for i in range(length):
             if i == (length-1) and k == (width-1):
                 error[a] = np.sum((pixels - canvas))
