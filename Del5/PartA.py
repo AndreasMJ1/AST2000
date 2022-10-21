@@ -66,7 +66,7 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
         forces = grav_star(r[i],mass)
         force = forcep + forces
         a = force/mass
-
+        
         vh = v[i] + (a*dt/2)
 
         r[i+1] = r[i] + vh*dt
@@ -78,7 +78,7 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
     return r,v
 
 if __name__ =='__main__':
-    start_pos = 956
+    start_pos = 956+400
     r0 = plan_pos[start_pos,0]
     r1 = m_ax[0]
     r2 = m_ax[2]
@@ -96,7 +96,7 @@ if __name__ =='__main__':
     v1 = np.sqrt(mu/r1)*(np.sqrt((2*r2)/(r1+r2))-1)
     #print(v1)
 
-    v2 = np.array((np.cos(ang1)*v1,np.sin(ang1)*v1))
+    v2 = np.array((v1,np.sin(ang1)*v1))
     #print(v2)
     for i in range(4000):
         r1 = plan_pos[i,0] ; r2 = plan_pos[i,2]
@@ -106,18 +106,44 @@ if __name__ =='__main__':
             #print(i, phi1,phi2) # 956 1494 2063
             break
     print(v2) 
-    v2 = v2 * np.array((-1,1)) 
-    v2 = v2*1.09
+    v2 = v2 * np.array((-1,0)) 
+    v2 = v2*1.04
     
-    r,v= spacecraft_traj(start_pos,r0, v2,2,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
+    r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     ang = np.arctan(r0[1]/r0[0])
     print(ang)
     plt.plot(r[:,0],r[:,1],color = 'Black')
-    plt.plot(plan_pos[start_pos:10000,2,0],plan_pos[start_pos:10000,2,1])
-    plt.plot(plan_pos[start_pos:10000,0,0],plan_pos[start_pos:10000,0,1])
+    plt.plot(plan_pos[start_pos:20000,2,0],plan_pos[start_pos:20000,2,1])
+    plt.plot(plan_pos[start_pos:20000,0,0],plan_pos[start_pos:20000,0,1])
     plt.axis('equal')
-    plt.scatter(plan_pos[start_pos,0,0], plan_pos[start_pos,0,1])
-    plt.scatter(plan_pos[start_pos,2,0], plan_pos[start_pos,2,1])
+    #plt.scatter(plan_pos[start_pos,0,0], plan_pos[start_pos,0,1])
+    #plt.scatter(plan_pos[start_pos,2,0], plan_pos[start_pos,2,1])
+    
+    star_mass = system.star_mass
+    pos_diff = np.zeros((10000-start_pos))
+    for i in trange(int(10000-start_pos)):
+        
+        pos_diff[i] = np.linalg.norm(plan_pos[start_pos+i,2] - r[i])
+        if np.linalg.norm(pos_diff[i]) <= np.linalg.norm(r[i])*np.sqrt(p_masses[2]/(10*star_mass)):
+            print(i)
+            #plt.scatter(plan_pos[i+start_pos,2,0],plan_pos[i+start_pos,2,1])
+            #plt.scatter(r[i,0],r[i,1])
+    k = (np.min(pos_diff))
+    #print(pos_diff)
+    u =np.delete(pos_diff,[-1])
+    #print(u[-1])
+    #print(k)
+    
+    l = (np.where(pos_diff == k ))[0][0] 
+
+    print(np.linalg.norm(r[l])*np.sqrt(p_masses[2]/(10*star_mass)))
+    print(pos_diff[l])
+
+    plt.scatter(plan_pos[int(l+start_pos),2,0],plan_pos[int(l+start_pos),2,1])
+    plt.scatter(r[l,0],r[l,1])
+            
+
     plt.show()
+
     
 
