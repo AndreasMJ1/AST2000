@@ -134,7 +134,8 @@ if __name__ == '__main__':
 
 
     #print(mission.measure_distances())
-    #mission.verify_manual_orientation(exac_pos,[2.82005178 ,6.58920755],0.003908) # 66.830023664
+    mission.verify_manual_orientation(exac_pos,[2.82005178 ,6.58920755],0.003908) # 66.830023664
+    mission.take_picture()
     #mission.begin_interplanetary_travel()
     
 

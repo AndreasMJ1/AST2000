@@ -96,7 +96,7 @@ if __name__ =='__main__':
     v1 = np.sqrt(mu/r1)*(np.sqrt((2*r2)/(r1+r2))-1)
     #print(v1)
 
-    v2 = np.array((v1,np.sin(ang1)*v1))
+    v2 = np.array((np.sin(ang1)*v1,np.cos(ang1)*v1))
     #print(v2)
     for i in range(4000):
         r1 = plan_pos[i,0] ; r2 = plan_pos[i,2]
@@ -106,12 +106,13 @@ if __name__ =='__main__':
             #print(i, phi1,phi2) # 956 1494 2063
             break
     print(v2) 
-    v2 = v2 * np.array((-1,0)) 
-    v2 = v2*1.04
+    v2 = v2 * np.array((-1,1)) 
+    v2 = v2 *1.02
     
     r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     ang = np.arctan(r0[1]/r0[0])
-    print(ang)
+    print(ang,'angle')
+    print(np.sin(ang))
     plt.plot(r[:,0],r[:,1],color = 'Black')
     plt.plot(plan_pos[start_pos:20000,2,0],plan_pos[start_pos:20000,2,1])
     plt.plot(plan_pos[start_pos:20000,0,0],plan_pos[start_pos:20000,0,1])
