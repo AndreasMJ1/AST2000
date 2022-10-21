@@ -129,7 +129,7 @@ if __name__ == '__main__':
     print(time)
     print(utils.AU_to_m(5.2939e-05))
     exac_pos = [1.22905961e+00, 8.38221473e-05]
-    mission.verify_launch_result(position) # [1.22905961e+00 8.38221473e-05]
+    mission.verify_launch_result(exac_pos) # [1.22905961e+00 8.38221473e-05]
 
 
 
