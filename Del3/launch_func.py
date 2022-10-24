@@ -28,6 +28,7 @@ homeplanet_mass = 1.5616743232192E25 #7.80837162e-06 m_sun
 
 
 G = 6.6743e-11 
+#G = 4*np.pi**2
 Sm = system.star_mass
 
 def gravity(r):
@@ -39,7 +40,9 @@ def gravity(r):
 def general_launch(phi,time,fuel_consume,Mass,F):
     vesc = np.sqrt((G*2*homeplanet_mass)/(8.961621*1E6))
     dist = 8.961621*1E6
+    phi = phi*np.pi/180
     rp = np.array((dist*np.cos(phi),dist*np.sin(phi)))
+    print(rp, 'start_pos')
     rpi = np.array((dist*np.cos(phi),dist*np.sin(phi)))
     dt = 0.001
     v = np.array((0,0))
@@ -61,7 +64,7 @@ def general_launch(phi,time,fuel_consume,Mass,F):
 
     ind = int(time/0.0002)
 
-    launch_point = plan_pos[:,0,ind] #+utils.m_to_AU(rpi) 
+    launch_point = plan_pos[:,0,ind] + utils.m_to_AU(rpi) 
     print(launch_point)
     ycomp = np.cos(phi)*dist*2*np.pi/(utils.day_to_s(system.rotational_periods[0]))
     ypos = np.array((0,utils.m_to_AU(ycomp*timer)))
@@ -73,9 +76,11 @@ def general_launch(phi,time,fuel_consume,Mass,F):
 
 if __name__ == '__main__':
     
-    rp, finpos, time ,rpi = general_launch(180,0.625,fuel_consume,spacecraft_mass,mean_force*1.6e13)
-    print(rp,finpos,time,rpi)
-    mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, rpi , 0.625)
+    rp, finpos, time ,launch_point = general_launch(180,1493*0.0002,fuel_consume,spacecraft_mass,mean_force*1.6e13)
+    print(rp,finpos,time,launch_point)
+    #k = rpi - utils.m_to_AU(rp)
+    print()
+    mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, launch_point , 1493*0.0002)
     mission.launch_rocket(0.001)
     mission.verify_launch_result(finpos) #[1.22905961e+00 8.38221473e-05]
 

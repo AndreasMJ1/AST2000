@@ -55,7 +55,7 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
     v = np.zeros((steps+1,2))
     r = np.zeros((steps+1,2))
     
-    r[0] = init_r + np.array((utils.km_to_AU(100*system.radii[0])*np.cos(ang),100*utils.km_to_AU(system.radii[0])*np.sin(ang))) #np.array(utils.km_to_AU(system.radii[0])*np.cos(ang),np.sin(ang)*utils.km_to_AU(system.radii[0])) 
+    r[0] = init_r + np.array((-5.82179446e-04,0)) #np.array(utils.km_to_AU(system.radii[0])*np.cos(ang),np.sin(ang)*utils.km_to_AU(system.radii[0])) #np.array((utils.km_to_AU(100*system.radii[0])*np.sin(ang),100*utils.km_to_AU(system.radii[0])*-np.cos(ang))) #np.array(utils.km_to_AU(system.radii[0])*np.cos(ang),np.sin(ang)*utils.km_to_AU(system.radii[0])) 
     v[0] = init_v + int_vel
     print(r[0])
     
@@ -106,12 +106,14 @@ if __name__ =='__main__':
             #print(i, phi1,phi2) # 956 1494 2063
             break
     print(v2) 
-    v2 = v2 * np.array((1,-1)) 
-    v2 = v2 *1.07
+    v2 = v2 * np.array((1,1)) 
+    v2 = v2*1.4 
+
     
     r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     ang = np.arctan(r0[1]/r0[0])
     print(ang,'angle')
+    print(np.cos(ang))
     print(np.sin(ang))
     plt.plot(r[:,0],r[:,1],color = 'Black')
     plt.plot(plan_pos[start_pos:20000,2,0],plan_pos[start_pos:20000,2,1])
@@ -130,10 +132,8 @@ if __name__ =='__main__':
             #plt.scatter(plan_pos[i+start_pos,2,0],plan_pos[i+start_pos,2,1])
             #plt.scatter(r[i,0],r[i,1])
     k = (np.min(pos_diff))
-    #print(pos_diff)
+    
     u =np.delete(pos_diff,[-1])
-    #print(u[-1])
-    #print(k)
     
     l = (np.where(pos_diff == k ))[0][0] 
 
@@ -142,7 +142,7 @@ if __name__ =='__main__':
 
     plt.scatter(plan_pos[int(l+start_pos),2,0],plan_pos[int(l+start_pos),2,1])
     plt.scatter(r[l,0],r[l,1])
-            
+    plt.scatter(8.46342770e-04 ,1.22575808e+00)
 
     plt.show()
 
