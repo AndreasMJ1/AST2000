@@ -50,7 +50,6 @@ def HVAFAENIHELVETE(X,Y,phi0):
     return theta , phi 
 
 def sky_imag():
-    
     colormap = np.load('Del4\himmelkule.npy')
     pix = np.array(colormap)
     canvas = np.zeros((length,width,3),dtype ='uint8')
@@ -65,7 +64,5 @@ def sky_imag():
                 color = colormap[ind]
                 r = color[2] ;g=  color[3] ; b= color[4]
                 canvas[i,k] = np.array([r,g,b])
- 
-    
 
 sky_imag()                 

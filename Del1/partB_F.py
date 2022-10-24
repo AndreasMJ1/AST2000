@@ -109,6 +109,7 @@ def orbit_launch(F,Mass,fuel):
     return v , timer, pos ,dist
 
 if __name__ == '__main__':
+    print(mean_force*1.6e13)
     mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, pos0, 0)
     mission.launch_rocket(0.001)
     #print(mean_force*1.6e13,fuel_consume,spacecraft_mass)
