@@ -120,6 +120,8 @@ def trilateration(n):
 
 #lambda_to_velocity(lambds,angle(phi))
 
-print(trilateration(400))
+#print(trilateration(400))
 
 #print(x[0],y[0])
+
+print(sky_imag('sky_picture.png'))

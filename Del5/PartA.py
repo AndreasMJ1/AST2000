@@ -105,11 +105,13 @@ if __name__ =='__main__':
         if abs(phi1 -phi2) < ang:
             #print(i, phi1,phi2) # 956 1494 2063
             break
-    print(v2) 
+     
     v2 = v2 * np.array((1,1)) 
+    print(v2, "velocity")
     v2 = v2*1.402 
-
     
+
+    #v2 = np.array([-2.82078946 -0.12380984])
     r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     ang = np.arctan(r0[1]/r0[0])
     print(ang,'angle')
