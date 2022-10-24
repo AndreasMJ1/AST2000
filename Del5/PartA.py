@@ -107,7 +107,7 @@ if __name__ =='__main__':
             break
     print(v2) 
     v2 = v2 * np.array((1,1)) 
-    v2 = v2*1.4 
+    v2 = v2*1.402 
 
     
     r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
@@ -133,7 +133,7 @@ if __name__ =='__main__':
             #plt.scatter(r[i,0],r[i,1])
     k = (np.min(pos_diff))
     
-    u =np.delete(pos_diff,[-1])
+    u = np.delete(pos_diff,[-1])
     
     l = (np.where(pos_diff == k ))[0][0] 
 

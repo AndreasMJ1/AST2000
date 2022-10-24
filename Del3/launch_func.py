@@ -58,28 +58,32 @@ def general_launch(phi,time,fuel_consume,Mass,F):
         v = v + a*dt
         rp = rp + v*dt
         timer += dt 
-    key= np.load('planet_trajectories.npz')
-    plan_pos = key['planet_positions']
+    #key= np.load('planet_trajectories.npz')
+    #plan_pos = key['planet_positions']
+    plan_pos = np.load('positions.npy')
+    print(plan_pos.shape)
     velo = np.load('velocities.npy') 
 
-    ind = int(time/0.0002)
 
-    launch_point = plan_pos[:,0,ind] + utils.m_to_AU(rpi) 
+    ind = int(time/0.0002)
+    print(ind)
+
+    launch_point = plan_pos[ind,0,:] + utils.m_to_AU(rpi) #launch_point = plan_pos[:,0,ind] + utils.m_to_AU(rpi) 
     print(launch_point)
     ycomp = np.cos(phi)*dist*2*np.pi/(utils.day_to_s(system.rotational_periods[0]))
     ypos = np.array((0,utils.m_to_AU(ycomp*timer)))
     pos_p = np.array((velo[ind,0,0]*utils.s_to_yr(timer),velo[ind,0,1]*utils.s_to_yr(timer)))
-    fin_pos = plan_pos[:,0,ind] + utils.m_to_AU(rp) + ypos + pos_p
+    fin_pos = plan_pos[ind,0,:] + utils.m_to_AU(rp) + ypos + pos_p
 
     return rp ,fin_pos, timer ,launch_point
 
 
-if __name__ == '__main__':
-    
-    rp, finpos, time ,launch_point = general_launch(180,1493*0.0002,fuel_consume,spacecraft_mass,mean_force*1.6e13)
+if __name__ == '__main__': #1493*0.0002
+
+    rp, finpos, time ,launch_point = general_launch(180, 1493*0.0002 , fuel_consume ,spacecraft_mass ,mean_force*1.6e13)
     print(rp,finpos,time,launch_point)
     #k = rpi - utils.m_to_AU(rp)
-    print()
+    
     mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, launch_point , 1493*0.0002)
     mission.launch_rocket(0.001)
     mission.verify_launch_result(finpos) #[1.22905961e+00 8.38221473e-05]
