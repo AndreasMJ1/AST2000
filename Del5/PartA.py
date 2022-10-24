@@ -78,7 +78,7 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
     return r,v
 
 if __name__ =='__main__':
-    start_pos = 956+400
+    start_pos = 1494   #956+400
     r0 = plan_pos[start_pos,0]
     r1 = m_ax[0]
     r2 = m_ax[2]
@@ -106,8 +106,8 @@ if __name__ =='__main__':
             #print(i, phi1,phi2) # 956 1494 2063
             break
     print(v2) 
-    v2 = v2 * np.array((-1,1)) 
-    v2 = v2 *1.02
+    v2 = v2 * np.array((1,-1)) 
+    v2 = v2 *1.07
     
     r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     ang = np.arctan(r0[1]/r0[0])
@@ -117,8 +117,8 @@ if __name__ =='__main__':
     plt.plot(plan_pos[start_pos:20000,2,0],plan_pos[start_pos:20000,2,1])
     plt.plot(plan_pos[start_pos:20000,0,0],plan_pos[start_pos:20000,0,1])
     plt.axis('equal')
-    #plt.scatter(plan_pos[start_pos,0,0], plan_pos[start_pos,0,1])
-    #plt.scatter(plan_pos[start_pos,2,0], plan_pos[start_pos,2,1])
+    plt.scatter(plan_pos[start_pos,0,0], plan_pos[start_pos,0,1])
+    plt.scatter(plan_pos[start_pos,2,0], plan_pos[start_pos,2,1])
     
     star_mass = system.star_mass
     pos_diff = np.zeros((10000-start_pos))
