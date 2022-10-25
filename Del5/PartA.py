@@ -108,15 +108,18 @@ if __name__ =='__main__':
      
     v2 = v2 * np.array((1,1)) 
     print(v2, "velocity")
-    v2 = v2*1.402 
-    
+    v2 =  v2*1.402 
+    print(v2)
 
     #v2 = np.array([-2.82078946 -0.12380984])
     r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
+    desv = v[0] + v2
+    print(desv, 'desired velo') #(-9.50206, -0.0178011)
+    print(np.array((-9.50206, -0.0178011))-np.array([-9.50208298, -0.01770287]))
     ang = np.arctan(r0[1]/r0[0])
-    print(ang,'angle')
-    print(np.cos(ang))
-    print(np.sin(ang))
+    #print(ang,'angle')
+    #print(np.cos(ang))
+    #print(np.sin(ang))
     plt.plot(r[:,0],r[:,1],color = 'Black')
     plt.plot(plan_pos[start_pos:20000,2,0],plan_pos[start_pos:20000,2,1])
     plt.plot(plan_pos[start_pos:20000,0,0],plan_pos[start_pos:20000,0,1])
@@ -141,10 +144,13 @@ if __name__ =='__main__':
 
     print(np.linalg.norm(r[l])*np.sqrt(p_masses[2]/(10*star_mass)))
     print(pos_diff[l])
-
-    plt.scatter(plan_pos[int(l+start_pos),2,0],plan_pos[int(l+start_pos),2,1])
-    plt.scatter(r[l,0],r[l,1])
-    plt.scatter(8.46342770e-04 ,1.22575808e+00)
+    print(l)
+    #plt.scatter(plan_pos[int(l+start_pos),2,0],plan_pos[int(l+start_pos),2,1])
+    #plt.scatter(r[l,0],r[l,1])
+    #plt.scatter(8.46342770e-04 ,1.22575808e+00)
+    #plt.scatter(-1.7664, -0.274508,)
+    plt.scatter(0.472717, -2.63318,color = 'black')
+    plt.scatter(plan_pos[int(6717+start_pos),2,0],plan_pos[int(6717+start_pos),2,1])
 
     plt.show()
 

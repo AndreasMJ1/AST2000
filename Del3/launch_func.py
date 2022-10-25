@@ -42,7 +42,7 @@ def general_launch(phi,time,fuel_consume,Mass,F):
     dist = 8.961621*1E6
     phi = phi*np.pi/180
     rp = np.array((dist*np.cos(phi),dist*np.sin(phi)))
-    print(rp, 'start_pos')
+    
     rpi = np.array((dist*np.cos(phi),dist*np.sin(phi)))
     dt = 0.001
     v = np.array((0,0))
@@ -77,15 +77,18 @@ def general_launch(phi,time,fuel_consume,Mass,F):
     pos_p = np.array((velo[ind,0,0]*utils.s_to_yr(timer),velo[ind,0,1]*utils.s_to_yr(timer)))
     fin_pos = plan_pos[ind,0,:] + utils.m_to_AU(rp) + ypos + pos_p
     #print(velo[ind])
-    print(np.array([-9.28709058, -0.13534456])- velo[ind,0])
+    inc = np.array([-9.50208298 ,-0.01770287]) - np.array([-9.28709058, -0.13534456])
+    
+    print(inc, "boost")
     return rp ,fin_pos, timer ,launch_point
 
 
 if __name__ == '__main__': #1493*0.0002
+    plan_pos = np.load('positions.npy')
     mean_force = 776938.7689392876
     rp, finpos, time ,launch_point = general_launch(180, 1493*0.0002 , fuel_consume ,spacecraft_mass ,mean_force)
     print(rp,finpos,time,launch_point)
-    #k = rpi - utils.m_to_AU(rp)
+
     exac_pos = [8.69554508e-04 ,1.22575863e+00]
     mission.set_launch_parameters(mean_force, fuel_consume, spacecraft_mass, 500, launch_point , 1493*0.0002)
     mission.launch_rocket(0.001)
@@ -93,6 +96,19 @@ if __name__ == '__main__': #1493*0.0002
     #mission.take_picture()
     
 
-    #mission.verify_manual_orientation(exac_pos, [-9.28709058, -0.13534456], 192) # 192 
-
-
+    mission.verify_manual_orientation(exac_pos, [-9.28709058, -0.13534456], 192) # 192 
+    
+    ins = mission.begin_interplanetary_travel()
+    ind = int(6717 + 1494)
+    boost = np.array([-0.2149924 , 0.11764169]) + np.array([2.298e-05 ,-9.823e-05])
+    ins.boost(boost)
+    ins.orient()
+    ins.coast_until_time(3350*0.0002)
+    ins.orient()
+    print("orientation halfway!!!!")
+    ins.coast_until_time(ind*0.0002)
+    ins.record_destination(2)
+   
+    print((plan_pos[ind,2,0],plan_pos[ind,2,1]))
+    #print(utils.m_to_AU(3.36913e+10), "DISTANCE LEFT")
+    landing = mission.begin_landing_sequence()
