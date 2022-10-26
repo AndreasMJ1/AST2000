@@ -98,21 +98,22 @@ if __name__ =='__main__':
 
     v2 = np.array((np.sin(ang1)*v1,np.cos(ang1)*v1))
     #print(v2)
-    for i in range(4000):
-        r1 = plan_pos[i,0] ; r2 = plan_pos[i,2]
-        phi1 = (r1[1]/r1[0])
-        phi2 = (r2[1]/r2[0])
-        if abs(phi1 -phi2) < ang:
+    #for i in range(4000):
+        #r1 = plan_pos[i,0] ; r2 = plan_pos[i,2]
+        #phi1 = (r1[1]/r1[0])
+        #phi2 = (r2[1]/r2[0])
+        #if abs(phi1 -phi2) < ang:
             #print(i, phi1,phi2) # 956 1494 2063
-            break
-     
+            #break
+    ve = np.sqrt(mu/r2)*(1-np.sqrt((2*r1)/(r1+r2)))
+    print(ve, 'exit el orbit')
     v2 = v2 * np.array((1,1)) 
     print(v2, "velocity")
-    v2 =  v2*1.402 
+    v2 =  v2*1.401 
     print(v2)
 
     #v2 = np.array([-2.82078946 -0.12380984])
-    r,v= spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
+    r,v = spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     desv = v[0] + v2
     print(desv, 'desired velo') #(-9.50206, -0.0178011)
     print(np.array((-9.50206, -0.0178011))-np.array([-9.50208298, -0.01770287]))
@@ -143,14 +144,17 @@ if __name__ =='__main__':
     l = (np.where(pos_diff == k ))[0][0] 
 
     print(np.linalg.norm(r[l])*np.sqrt(p_masses[2]/(10*star_mass)))
-    print(pos_diff[l])
-    print(l)
+    #print(pos_diff[l])
+    #print(l)
     #plt.scatter(plan_pos[int(l+start_pos),2,0],plan_pos[int(l+start_pos),2,1])
     #plt.scatter(r[l,0],r[l,1])
     #plt.scatter(8.46342770e-04 ,1.22575808e+00)
     #plt.scatter(-1.7664, -0.274508,)
-    plt.scatter(0.472717, -2.63318,color = 'black')
-    plt.scatter(plan_pos[int(6717+start_pos),2,0],plan_pos[int(6717+start_pos),2,1])
+    #plt.scatter(0.472717, -2.63318,color = 'black')
+    #plt.scatter(plan_pos[int(6717+start_pos),2,0],plan_pos[int(6717+start_pos),2,1])
+    plt.scatter(plan_pos[int(6717+600),2,0],plan_pos[int(6717+600),2,1],color = 'black')
+    plt.scatter(-0.138886, -2.69401)
+
 
     plt.show()
 

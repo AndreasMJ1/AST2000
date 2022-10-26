@@ -99,16 +99,10 @@ if __name__ == '__main__': #1493*0.0002
     mission.verify_manual_orientation(exac_pos, [-9.28709058, -0.13534456], 192) # 192 
     
     ins = mission.begin_interplanetary_travel()
-    ind = int(6717 + 1494)
+    ind = int(6717+600)#+ 1494
     boost = np.array([-0.2149924 , 0.11764169]) + np.array([2.298e-05 ,-9.823e-05])
     ins.boost(boost)
-    ins.orient()
-    ins.coast_until_time(3350*0.0002)
-    ins.orient()
-    print("orientation halfway!!!!")
     ins.coast_until_time(ind*0.0002)
+    ins.orient()
     ins.record_destination(2)
-   
-    print((plan_pos[ind,2,0],plan_pos[ind,2,1]))
-    #print(utils.m_to_AU(3.36913e+10), "DISTANCE LEFT")
     landing = mission.begin_landing_sequence()
