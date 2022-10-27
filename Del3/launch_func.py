@@ -100,9 +100,24 @@ if __name__ == '__main__': #1493*0.0002
     
     ins = mission.begin_interplanetary_travel()
     ind = int(6717+600)#+ 1494
-    boost = np.array([-0.2149924 , 0.11764169]) + np.array([2.298e-05 ,-9.823e-05])
-    ins.boost(boost)
-    ins.coast_until_time(ind*0.0002)
+    boost = np.array([-0.2149924 , 0.11764169])# + np.array([2.298e-05 ,-9.823e-05])
+    #ins.boost(boost)
+    #ins.coast_until_time(ind*0.0002)
     ins.orient()
-    ins.record_destination(2)
-    landing = mission.begin_landing_sequence()
+    for i in range(50):
+        k = ind/50
+        ins.coast_until_time(k*i)
+        tine, pos,vel = ins.orient()
+        plt.scatter(pos[0],pos[1])
+
+    #ins.boost(np.array([0.6,0]))
+    #ins.coast_until_time((ind+900)*0.0002)
+    #ins.orient()
+    #ins.coast_until_time((ind+900+(70*20))*0.0002)
+    #for i in trange(70):
+    #    time, pos , vel = ins.orient()
+    #    pos_diff = plan_pos[]
+    #    ins.boost()
+    #plt.show()
+    #ins.record_destination(2)
+    #landing = mission.begin_landing_sequence()

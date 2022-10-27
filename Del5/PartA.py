@@ -153,7 +153,8 @@ if __name__ =='__main__':
     #plt.scatter(0.472717, -2.63318,color = 'black')
     #plt.scatter(plan_pos[int(6717+start_pos),2,0],plan_pos[int(6717+start_pos),2,1])
     plt.scatter(plan_pos[int(6717+600),2,0],plan_pos[int(6717+600),2,1],color = 'black')
-    plt.scatter(-0.138886, -2.69401)
+    
+    plt.scatter(-0.139142, -2.69412)
 
 
     plt.show()
