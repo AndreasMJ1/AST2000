@@ -144,14 +144,8 @@ if __name__ =='__main__':
     l = (np.where(pos_diff == k ))[0][0] 
 
     print(np.linalg.norm(r[l])*np.sqrt(p_masses[2]/(10*star_mass)))
-    #print(pos_diff[l])
-    #print(l)
-    #plt.scatter(plan_pos[int(l+start_pos),2,0],plan_pos[int(l+start_pos),2,1])
-    #plt.scatter(r[l,0],r[l,1])
-    #plt.scatter(8.46342770e-04 ,1.22575808e+00)
-    #plt.scatter(-1.7664, -0.274508,)
-    #plt.scatter(0.472717, -2.63318,color = 'black')
-    #plt.scatter(plan_pos[int(6717+start_pos),2,0],plan_pos[int(6717+start_pos),2,1])
+    
+    
     plt.scatter(plan_pos[int(6717+600),2,0],plan_pos[int(6717+600),2,1],color = 'black')
     
     plt.scatter(-0.139142, -2.69412)

@@ -109,6 +109,7 @@ if __name__ == '__main__': #1493*0.0002
         ins.coast_until_time(k*i)
         tine, pos,vel = ins.orient()
         plt.scatter(pos[0],pos[1])
+        plt.scatter(plan_pos[])
 
     #ins.boost(np.array([0.6,0]))
     #ins.coast_until_time((ind+900)*0.0002)
