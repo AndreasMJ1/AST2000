@@ -24,7 +24,12 @@ G = 4*np.pi**2
 n_planets = len(p_masses)
 
 plan_vel = np.load('velocities.npy')
-plan_pos = np.load('positions.npy')
+#plan_pos = np.load('positions.npy')
+explanpos = np.load("planet_trajectories.npz")
+npos = explanpos['planet_positions']
+plan_pos = np.einsum("ijk->kji",npos)
+times = explanpos['times']
+
 def grav_star(r,m):
     r_abs = np.linalg.norm(r)
     sm = system.star_mass
@@ -60,6 +65,7 @@ def spacecraft_traj(init_t,init_r,init_v,time,dt):
     print(r[0])
     
     print(ang)
+    ang = np.pi-ang 
 
     for i in trange(steps):
         forcep = grav_planets(r[i],mass,int(t_ind+i))
@@ -84,7 +90,7 @@ if __name__ =='__main__':
     r2 = m_ax[2]
     ang = np.pi*(1-(1/(2*np.sqrt(2)))*np.sqrt(((r1/r2)+1)**3))
     ang1 = np.arctan(r0[1]/r0[0])
-    #print(ang)
+
     ex = np.array((np.cos(ang)*r1,np.sin(ang)*r1))
     diff = np.zeros((4000,2))
     for i in range(4000):
@@ -94,31 +100,21 @@ if __name__ =='__main__':
     g = np.min(diff) #379
     mu = G*system.star_mass
     v1 = np.sqrt(mu/r1)*(np.sqrt((2*r2)/(r1+r2))-1)
-    #print(v1)
+
 
     v2 = np.array((np.sin(ang1)*v1,np.cos(ang1)*v1))
-    #print(v2)
-    #for i in range(4000):
-        #r1 = plan_pos[i,0] ; r2 = plan_pos[i,2]
-        #phi1 = (r1[1]/r1[0])
-        #phi2 = (r2[1]/r2[0])
-        #if abs(phi1 -phi2) < ang:
-            #print(i, phi1,phi2) # 956 1494 2063
-            #break
     ve = np.sqrt(mu/r2)*(1-np.sqrt((2*r1)/(r1+r2)))
     print(ve, 'exit el orbit')
-    v2 = v2 * np.array((1,1)) 
-    print(v2, "velocity")
     v2 =  v2*1.401 
-    print(v2)
+    print(v2,"velocity")
 
     #v2 = np.array([-2.82078946 -0.12380984])
     r,v = spacecraft_traj(start_pos,r0, v2,4,0.0002) # np.array((1.0760005429,0.31753332257920436)) 5.6*v2
     desv = v[0] + v2
     print(desv, 'desired velo') #(-9.50206, -0.0178011)
     print(np.array((-9.50206, -0.0178011))-np.array([-9.50208298, -0.01770287]))
-    ang = np.arctan(r0[1]/r0[0])
-    #print(ang,'angle')
+    ang = np.pi + np.arctan(r0[1]/r0[0])
+    print(ang,'angle')
     #print(np.cos(ang))
     #print(np.sin(ang))
     plt.plot(r[:,0],r[:,1],color = 'Black')
@@ -129,6 +125,7 @@ if __name__ =='__main__':
     plt.scatter(plan_pos[start_pos,2,0], plan_pos[start_pos,2,1])
     
     star_mass = system.star_mass
+    """
     pos_diff = np.zeros((10000-start_pos))
     for i in trange(int(10000-start_pos)):
         
@@ -145,11 +142,18 @@ if __name__ =='__main__':
 
     print(np.linalg.norm(r[l])*np.sqrt(p_masses[2]/(10*star_mass)))
     
-    
-    plt.scatter(plan_pos[int(6717+600),2,0],plan_pos[int(6717+600),2,1],color = 'black')
-    
-    plt.scatter(-0.139142, -2.69412)
 
+
+    """
+    pace = (np.array((plan_pos[int(6717+5*231+400+1),2,0],plan_pos[int(6717+5*231+400+1),2,1]))-np.array((plan_pos[int(6717+5*231+400),2,0],plan_pos[int(6717+5*231+400),2,1])))/(times[int(6717+5*231+400+1)]-times[int(6717+5*231+400)])
+    print(pace,"go on then")
+
+    timep = 6717+5*231
+    plt.scatter(plan_pos[int(6717+5*231),2,0],plan_pos[int(6717+5*231),2,1],color = 'black')
+    # FINDINF VEL -9.28636344 ,-0.15831185, -9.49991765 -0.01766334
+    plt.scatter(plan_pos[timep+400,2,0],plan_pos[timep+400,2,1])
+    plt.scatter(0.258721, -2.66662)
+    plt.scatter(0.613057, -2.54233)
 
     plt.show()
 
