@@ -133,40 +133,20 @@ if __name__ == '__main__': #1494*0.0002
     indt = int(6717+5*231+400)
     ins.orient()
     print("Pick up the bloody pace") # 4.3060466  1.04966561
-    boostnr2 =  np.array((4.3060466,  1.3)) - np.array((5.02218,1.53139))
+    boostnr2 =  np.array((4.27,  1.3)) - np.array((5.02218,1.53139))
+    #np.array((4.3060466,  1.3))
     print(boostnr2 , "slow down pal")
     ins.boost(boostnr2)
+    
     ins.look_in_direction_of_planet(2)
     ins.start_video()
     ins.coast(0.1)
-    #ins.finish_video("C:/Users/andym/Downloads/MCAst_win.zip/mcast/data")
     ins.finish_video()
-    #ins.record_destination(2)
     print("COngratz with A SICK VIFEO")
-    """
-    for i in range(400):
-        ins.coast_until_time(timep + (300*times[1])+ (i*times[1]))
-        t,p,v = ins.orient()
-        if np.linalg.norm(np.array((plan_pos[indt+i,2,0],plan_pos[indt+i,2,1]))- np.array((p[0],p[1]))) >= np.linalg.norm((p[0],p[1]))*np.sqrt(Sm/(10*Sm)):
-            print(f"{i}HEYA")
-            break
-        else:
-            pass 
-
-    """
     
-
-
-
-    #k = np.array((velo[ind,2,0],velo[ind,2,1])) - np.array((v[0],v[1]))
-    #ins.boost(np.array((1.02,0.64)))
-    #ins.coast_until_time(ind*0.0002 + 600*0.0002)
-    #ins.orient()
-
-    #ins.boost(np.array((0,0.3)))
-
-    #ins.coast(0.1)
-    #ins.orient()
+    ins.coast(0.022)
+    ins.record_destination(2)
+        
     landing = mission.begin_landing_sequence()
     
     
