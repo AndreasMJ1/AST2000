@@ -12,8 +12,4 @@ seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
-print(utils.kg_to_m(1))
-
-print(utils.m_to_AU(1.20205e+10))
-
-print(system.print_info())
+print(seed)
