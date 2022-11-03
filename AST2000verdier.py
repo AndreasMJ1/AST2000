@@ -13,3 +13,5 @@ mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
 print(seed)
+
+system.print_info()

@@ -103,27 +103,13 @@ if __name__ == '__main__': #1494*0.0002
 
     mission.verify_manual_orientation(exac_pos, [-9.28636344 ,-0.15831185], 192) # 192 
 
-
     ins = mission.begin_interplanetary_travel()
-    
 
     ind = int(2000)#int(6717+266*4)#+ 1494
     boost = np.array((-9.49991765, -0.01766334)) - np.array((-9.28636344 ,-0.15831185))
     ins.boost(boost)
     ins.coast_until_time(6717*times[1])
     ins.orient()
-    """
-    diff = np.zeros((400))
-
-    for i in trange(400):
-        ins.coast_until_time(6717*times[1]+5*i*times[1])
-        t, pos, vel = ins.orient()
-        diff[i] = np.linalg.norm(np.array((plan_pos[int(6717+5*i),2,0],plan_pos[int(6717+5*i),2,1])) -np.array((pos[0],pos[1])))
-    yeye = np.min(diff)
-    print(yeye)
-    YAAA = np.where(yeye == diff)
-    print(YAAA)
-    """
 
     ins.coast_until_time(6717*times[1]+5*231*times[1])
     timep = 6717*times[1]+5*231*times[1] 
@@ -135,15 +121,6 @@ if __name__ == '__main__': #1494*0.0002
     print("Pick up the bloody pace") # 4.3060466  1.04966561
     boostnr2 =  np.array((4.27,  1.3)) - np.array((5.02218,1.53139))
     ins.boost(boostnr2)
-    """
-    ins.look_in_direction_of_planet(2)
-    ins.start_video()
-    ins.coast(0.1)
-    ins.finish_video()
-    
-    ins.coast(0.022)
-    ins.record_destination(2)
-    """
 
     def orbit_fix(ind):
         t,p,v = ins.orient()
@@ -151,11 +128,6 @@ if __name__ == '__main__': #1494*0.0002
         ang = planet-p 
         boost = np.array((ang[1],ang[0]))
         ins.coast_until_time((ind+15)*times[1])
-
-    #orbit_fix(indt)
-    ##orbit_fix(indt+15)
-    #ins.coast_until_time(((indt+15)*times[1]+0.018))
-    #orbit_fix(int(indt+15+(0.018/times[1])))
 
 
     planet = np.array((plan_pos[indt+15,2,0],plan_pos[indt+15,2,1]))
