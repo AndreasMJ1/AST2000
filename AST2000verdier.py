@@ -12,6 +12,7 @@ seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
-print(seed)
+lau = [[1,2,3],[32]]
 
-system.print_info()
+for i in lau[0]:
+    print(i,lau[1][0])
