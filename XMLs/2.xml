@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SerializedWorld xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<sun_col_r>0.983</sun_col_r>
+<sun_col_g>0.967</sun_col_g>
+<sun_col_b>1.000</sun_col_b>
+<sun_intensity>0.100</sun_intensity>
+<screenshot_width>900</screenshot_width>
+<screenshot_height>900</screenshot_height>
+<global_radius_scale>0.985</global_radius_scale>
+<resolution>064</resolution>
+<uuid>5acbd644-37c7-11e6-ac61-9e71128cae77</uuid> 
+<skybox>000</skybox>
+<Objects>
+  <SerializedMCAstObject>
+    <category>star</category>
+    <pos_x>0</pos_x>
+    <pos_z>0</pos_z>
+    <pos_y>0</pos_y>
+    <rot_y>0</rot_y>
+    <radius>903916.0143419084</radius>
+    <temperature>6784.461342416051</temperature>
+    <seed>73494990</seed>
+    <atmosphereDensity>10</atmosphereDensity>
+    <atmosphereHeight>1.025</atmosphereHeight>
+    <outerRadiusScale>1.0025</outerRadiusScale>
+    <name>The star</name>
+    <Objects>
+      <SerializedMCAstObject>
+        <pos_x>1.129075566318781</pos_x>
+        <pos_z>-2.3579717132261173</pos_z>
+        <pos_y>0</pos_y>
+        <rot_y>-248.03892974697888</rot_y>
+        <radius>5082.6114686091905</radius>
+        <temperature>230.28802331670573</temperature>
+        <seed>73494002</seed>
+        <atmosphereDensity>0.017476789464244788</atmosphereDensity>
+        <atmosphereHeight>1.025</atmosphereHeight>
+        <outerRadiusScale>1.0025</outerRadiusScale>
+        <category>planet</category>
+        <name>planet 2</name>
+        <Frames>
+          <Frame>
+            <id>0</id>
+            <pos_x>1.129075566318781</pos_x>
+            <pos_z>-2.3579717132261173</pos_z>
+            <pos_y>0</pos_y>
+            <rot_y>-248.03892974697888</rot_y>
+          </Frame>
+        </Frames>
+        <Objects>
+          <SerializedMCAstObject>
+            <pos_x>0.0005394483090677399</pos_x>
+            <pos_z>-0.0009309786571718634</pos_z>
+            <pos_y>-1.1252321628419798e-06</pos_y>
+            <rot_y>-515.0006209124344</rot_y>
+            <Frames>
+              <Frame>
+                <id>0</id>
+                <pos_x>0.0005394483090677399</pos_x>
+                <pos_z>-0.0009309786571718634</pos_z>
+                <pos_y>-1.1252321628419798e-06</pos_y>
+                <rot_y>-515.0006209124344</rot_y>
+              </Frame>
+            </Frames>
+            <radius>1925.6030380455684</radius>
+            <temperature>230.28802331670573</temperature>
+            <seed>73494012</seed>
+            <parentPlanet>73494002</parentPlanet>
+            <atmosphereDensity>0</atmosphereDensity>
+            <atmosphereHeight>0</atmosphereHeight>
+            <outerRadiusScale>1.0025</outerRadiusScale>
+            <category>moon</category>
+            <name>Moon 1 of Planet 2</name>
+          </SerializedMCAstObject>
+        </Objects>
+      </SerializedMCAstObject>
+    </Objects>
+  </SerializedMCAstObject>
+</Objects>
+<Cameras>
+  <SerializedCamera>
+    <cam_x>1.1284203997897067</cam_x>
+    <cam_z>-2.357659623653723</cam_z>
+    <cam_y>0.0</cam_y>
+    <dir_x>0.9028040847684505</dir_x>
+    <dir_z>-0.4300520718766511</dir_z>
+    <dir_y>6.123233995736766e-17</dir_y>
+    <up_x>0.0</up_x>
+    <up_z>0.0</up_z>
+    <up_y>1.0</up_y>
+    <fov>70</fov>
+    <time>1.7784138564887995</time>
+    <frame>0</frame>
+  </SerializedCamera>
+</Cameras>
+</SerializedWorld>

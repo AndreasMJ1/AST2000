@@ -53,9 +53,10 @@ def goof_func():
     pos = np.linspace(0,r,150_000)
     return T, rho , pos
 T, rho , pos = goof_func()
-#rho_profile = interp1d(pos,rho)
-#T_profile = interp1d(pos, T, kind = "quadratic")
-print(T[-1])
+
+#print(T[-1])
 plt.plot(pos,rho)
 plt.show()
-    
+plt.plot(pos,T)
+plt.show()
+
