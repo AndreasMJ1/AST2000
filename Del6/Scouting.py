@@ -178,6 +178,11 @@ if __name__ == '__main__': #1494*0.0002
     def rotation_position(pos,time):
         phi_vel = "rotasjonen til planeten"
         r = np.linalg.norm(pos)
+        phi = 0 
+        dt = 1
+        for i in range(time):
+            
+
 
 
     #landing.take_picture("1.xml")

@@ -107,6 +107,8 @@ if __name__ == '__main__': #1494*0.0002
 
     ind = int(2000)#int(6717+266*4)#+ 1494
     boost = np.array((-9.49991765, -0.01766334)) - np.array((-9.28636344 ,-0.15831185))
+    ins.orient()
+    plt.quiver()
     ins.boost(boost)
 
     ins.coast_until_time(6717*times[1])

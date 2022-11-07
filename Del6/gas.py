@@ -82,10 +82,3 @@ if __name__ == '__main__':
         for lamda_0ref in mols[0]:
             results = GaussianModel(lamda_0ref,mols[1][0])
     
-    #res = GaussianModel(690,(2*15.999*1.661e-27))
-    #print(res)
-    
-    """
-    Tester 02 for 632 , 690 , 760 osv...
-
-    """
