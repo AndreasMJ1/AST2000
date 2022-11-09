@@ -170,7 +170,7 @@ if __name__ == '__main__': #1494*0.0002
     
     ins.coast(0.022)
     ins.record_destination(2)
-
+    
     
     landing = mission.begin_landing_sequence()
     landing.look_in_direction_of_planet(2)

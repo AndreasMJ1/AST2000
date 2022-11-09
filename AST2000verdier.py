@@ -12,7 +12,11 @@ seed = utils.get_seed('andrmj')
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
-lau = [[1,2,3],[32]]
+plan_pos = np.load("planet_trajectories.npz")
+times = plan_pos["times"]
+a = 1494
 
-for i in lau[0]:
-    print(i,lau[1][0])
+time = 1494 * times[1]
+print(time)
+
+

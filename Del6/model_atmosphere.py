@@ -22,7 +22,8 @@ plan_mass = system.masses[2] *const.m_sun
 rho0 = system.atmospheric_densities[2]
 h = const.m_p * 1.00784
 
-mean_weight = 30 # finn eksakt 
+mean_weight = 44.01069 # finn eksakt 
+#44.0124 44.009
 
 def grav(r):
     return g*plan_mass/(system.radii[2]*1e3+r)**2
@@ -54,9 +55,17 @@ def goof_func():
     return T, rho , pos
 T, rho , pos = goof_func()
 
-#print(T[-1])
-plt.plot(pos,rho)
-plt.show()
-plt.plot(pos,T)
-plt.show()
+func = interp1d(pos,rho, kind ="quadratic")
+
+
+if __name__ =="__main__":
+
+    plt.plot(pos,rho)
+    plt.xlabel("Height (m)")
+    plt.ylabel("Atmospheric density")
+    plt.show()
+    plt.plot(pos,T)
+    plt.xlabel("Height (m)")
+    plt.ylabel("Temprature (Kelvin)")
+    plt.show()
 

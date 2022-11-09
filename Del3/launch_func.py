@@ -108,7 +108,9 @@ if __name__ == '__main__': #1494*0.0002
     ind = int(2000)#int(6717+266*4)#+ 1494
     boost = np.array((-9.49991765, -0.01766334)) - np.array((-9.28636344 ,-0.15831185))
     ins.orient()
-    plt.quiver()
+    plt.quiver(exac_pos[0],exac_pos[1],boost[0],boost[1])
+    print(exac_pos[0],exac_pos[1],boost[0],boost[1], "boost 1")
+
     ins.boost(boost)
 
     ins.coast_until_time(6717*times[1])
@@ -119,26 +121,24 @@ if __name__ == '__main__': #1494*0.0002
     t,p, v = ins.orient()
     ins.boost(np.array((1.03,0.73)))
     plt.quiver(p[0],p[1],1.03,0.73,label = "Boost nr 2")
+    print(p[0],p[1],1.03,0.73,"YAAAA")
     ins.coast_until_time(timep + 400*times[1])
     indt = int(6717+5*231+400)
-    ins.orient()
-    print("Pick up the bloody pace") # 4.3060466  1.04966561
+    t,p,v = ins.orient()
+
     boostnr2 =  np.array((4.27,  1.3)) - np.array((5.02218,1.53139))
     ins.boost(boostnr2)
-
-    def orbit_fix(ind):
-        t,p,v = ins.orient()
-        planet = np.array((plan_pos[ind,2,0],plan_pos[ind,2,1]))
-        ang = planet-p 
-        boost = np.array((ang[1],ang[0]))
-        ins.coast_until_time((ind+15)*times[1])
-
+    print(p[0],p[1],np.array((4.27,  1.3)) - np.array((5.02218,1.53139)),"boost n3")
 
     planet = np.array((plan_pos[indt+15,2,0],plan_pos[indt+15,2,1]))
-    t,v,p = ins.orient()
+    t,p,v = ins.orient()
     ang = planet-p
-    print(ang)
-    ins.boost(np.array((0.035,0.025))*np.array([ang[1],ang[0]]))
+
+    boostnr3 = np.array((0.035,0.025))*np.array([ang[1],ang[0]])
+    ins.boost(boostnr3)
+
+    plt.quiver(p[0],p[1],boostnr3[0],boostnr3[1])
+    print(p[0],p[1],boostnr3[0],boostnr3[1],"boost 3")
     ins.look_in_direction_of_planet(2)
     ins.start_video()
     ins.coast(0.1)

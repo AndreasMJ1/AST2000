@@ -18,7 +18,7 @@ aph_ang = system.aphelion_angles
 m_ax = system.semi_major_axes
 p_pos = system.initial_positions
 p_vel = system.initial_velocities
-print(system.atmospheric_densities)
+#print(system.atmospheric_densities)
 
 radius = 8961621.4961
 def flux_rec(dist):

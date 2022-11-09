@@ -65,20 +65,20 @@ def GaussianModel(lambda0,mass):
                     vals = np.array((f_min[k],lambda_range[i]*1e-9,Temps[j]))
     #plt.plot(lambdas[ind0:ind1],flux[ind0:ind1])
     #plt.plot(lambdas[ind0:ind1],computed)
+    #plt.xlabel("Lambda value +- max doppler shift")
+    #plt.ylabel("Relative flux")
     #plt.show()
     print(f"{vals[0]:.4f} -||- {vals[1]:.4f} -||- {vals[2]:.4f} -||- {particle_doppler:.4f}")
 
     return lowest
 
 if __name__ == '__main__':
-
-    o2 = [[632,690,760],[31.998*u]] ; h20 = [[720,820,940],[18.01528*u]]
-    co2 = [[1400,1600],[44.009*u]]  ; ch4 = [[1660,2200],[16*u]]
-    co = [[2340],[28.01*u]]         ; n2o = [[2870],[44.0124*u]]
-    comps = [o2 , h20, co2, ch4, co, n2o]
+    O2 = [[632,690,760],[31.998*u]] ; H2O = [[720,820,940],[18.01528*u]]
+    CO2 = [[1400,1600],[44.009*u]]  ; CH4 = [[1660,2200],[16*u]]
+    CO = [[2340],[28.01*u]]         ; N2O = [[2870],[44.0124*u]]
+    comps = [O2 , H2O, CO2, CH4, CO, N2O]
 
     for mols in comps:
         print("--------------------------------------------------")
         for lamda_0ref in mols[0]:
             results = GaussianModel(lamda_0ref,mols[1][0])
-    
