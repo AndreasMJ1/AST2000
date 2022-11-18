@@ -23,16 +23,16 @@ noise = np.load("noise.npy")
 
 def max_shift(f0,molar_mass):
     dv = 10_000 #m/s
-    particle_v = np.sqrt(2*k*450/molar_mass) #Bruker vi 3???
+    particle_v = np.sqrt(k*450/molar_mass) #Bruker vi 3???
     maxshift = ((dv+particle_v) * f0)/c  #f0 = emitted frequency
     return maxshift 
 
 def gaussian_line(fmin,sigma,lamda,lambda0):
-    F = 1+ (fmin-1) *np.exp(-0.5*((lamda-lambda0)/(sigma))**2)
+    F = 1+ ((fmin-1) *np.exp(-0.5*((lamda-lambda0)/(sigma))**2))
     return F 
 
 def sigmasolver(lambda0, m, T):
-    sig = (lambda0/c*np.sqrt(k*T/m))
+    sig = (lambda0/c*np.sqrt((k*T/m)))
     return sig 
 
 def GaussianModel(lambda0,mass):
@@ -63,7 +63,6 @@ def GaussianModel(lambda0,mass):
                     lowest = chi
                     computed = gaussian_line(f_min[k],sigma,lambda_range[i],lambdas[ind0:ind1]*1e9)
                     vals = np.array((f_min[k],lambda_range[i]*1e-9,Temps[j]))
-
     #plt.plot(lambdas[ind0:ind1],flux[ind0:ind1])
     #plt.plot(lambdas[ind0:ind1],computed)
     #plt.xlabel("Lambda value +- max doppler shift")
@@ -74,15 +73,17 @@ def GaussianModel(lambda0,mass):
     return lowest
 
 if __name__ == '__main__':
-    
+
+    o2 = [[632,690,760],[31.998*u]] ; h20 = [[720,820,940],[18.01528*u]]
+    co2 = [[1400,1600],[44.009*u]]  ; ch4 = [[1660,2200],[16*u]]
+    co = [[2340],[28.01*u]]         ; n2o = [[2870],[44.0124*u]]
+    comps = [o2 , h20, co2, ch4, co, n2o]
     O2 = [[632,690,760],[31.998*u]] ; H2O = [[720,820,940],[18.01528*u]]
     CO2 = [[1400,1600],[44.009*u]]  ; CH4 = [[1660,2200],[16*u]]
     CO = [[2340],[28.01*u]]         ; N2O = [[2870],[44.0124*u]]
-    
     comps = [O2 , H2O, CO2, CH4, CO, N2O]
 
     for mols in comps:
         print("--------------------------------------------------")
         for lamda_0ref in mols[0]:
             results = GaussianModel(lamda_0ref,mols[1][0])
-

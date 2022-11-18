@@ -56,3 +56,5 @@ def goof_func():
 T, rho , pos = goof_func()
 
 func = interp1d(pos,rho, kind ="quadratic")
+print(func(0.000000001))
+print(rho0)
