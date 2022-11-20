@@ -51,8 +51,10 @@ def goof_func():
             step = rho[-1] + drho * dr 
             rho.append(step)
             r += dr
+
     pos = np.linspace(0,r,150_000)
     return T, rho , pos
+    
 T, rho , pos = goof_func()
 
 func = interp1d(pos,rho, kind ="quadratic")
