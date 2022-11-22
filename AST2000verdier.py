@@ -19,4 +19,7 @@ a = 1494
 time = 1494 * times[1]
 print(time)
 
-
+print(system.star_radius)
+print(system.star_mass)
+print(system.star_temperature)
+print(system.star_color)
