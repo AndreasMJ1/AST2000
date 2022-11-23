@@ -1,4 +1,4 @@
-from cv2 import RHO
+#IKKE KODEMAL
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -9,7 +9,7 @@ import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
 from scipy.interpolate import interp1d
-seed = utils.get_seed('andrmj')
+seed = 73494
 
 mission = SpaceMission(seed)
 system = SolarSystem(seed)

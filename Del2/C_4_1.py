@@ -1,3 +1,4 @@
+#IKKE KODEMAL
 from ast import NotEq
 from lib2to3.pytree import type_repr
 import numpy as np
@@ -34,7 +35,11 @@ def gravity(r,pmass):
     return f 
 
 
-def solar_orbit(N,planetindx): #N = Antall steg, planetindx = liste med planetIDer
+def solar_orbit(N,planetindx):
+    """
+    Function that will numerically calculate the trajectories for any planets and the sun 
+    Parameters: N = time span in steps, planetindx = IDs of planets as a list 
+    """
     dt = 0.0002 
     #dt = 0.0238
     masses = np.zeros(len(planetindx))
@@ -81,7 +86,7 @@ def solar_orbit(N,planetindx): #N = Antall steg, planetindx = liste med planetID
         vhs = sun_v[s] + a_s*dt/2
         sun_r[s+1] = sun_r[s] +vhs*dt
         sun_v[s+1] = vhs + a_s*dt/2
-        #print(a_s)
+    
         if s == 0:
             pass
         elif p == len(masses)-1:
@@ -107,15 +112,8 @@ plt.plot(sun_r[:,0],sun_r[:,1])
 for i in range(len(r[0,:,0])):
     plt.plot(r[:,i,0],r[:,i,1])
 
-np.save('positions.npy',r)
-np.save('sun_position.npy',sun_r)
-np.save('velocities.npy',v)
-np.save('sun_velocity.npy',sun_v)
-
-#plt.legend(['sun','0','2','5'])
-rnew = np.reshape(r,(2,7,120000))
 plt.show()
-#mission.verify_planet_positions(24.0,rnew)
+
 
 
 

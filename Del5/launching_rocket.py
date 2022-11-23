@@ -99,21 +99,21 @@ if __name__ == '__main__': #1494*0.0002
     exac_pos = [-4.39913930e-04  ,1.22575507e+00]
     R0 = np.array((plan_pos[1494,0,0],plan_pos[1494,0,1]))  # np.array((9.69192737e-04 ,1.22576046e+00))  # [9.69192737e-04 1.22576046e+00]             # AU
     R0 = R0 - np.array([radius, 0]) / const.AU  
+
+    ###Launching through AST mission###
     mission.set_launch_parameters(mean_force, 0.18871032743168, spacecraft_mass, 500, R0 , times[1494])
     mission.launch_rocket(0.001)
     mission.verify_launch_result(exac_pos) #[1.22905961e+00 8.38221473e-05]
     mission.take_picture()
-    
 
     mission.verify_manual_orientation(exac_pos, [-9.28636344 ,-0.15831185], 192) # 192 
-
     ins = mission.begin_interplanetary_travel()
 
+
+    ### Boosting and adujsting relative to planets relative position ###
     ind = int(2000)#int(6717+266*4)#+ 1494
     boost = np.array((-9.49991765, -0.01766334)) - np.array((-9.28636344 ,-0.15831185))
     ins.orient()
-    plt.quiver(exac_pos[0],exac_pos[1],boost[0],boost[1])
-    print(exac_pos[0],exac_pos[1],boost[0],boost[1], "boost 1")
 
     ins.boost(boost)
 
@@ -124,8 +124,8 @@ if __name__ == '__main__': #1494*0.0002
     timep = 6717*times[1]+5*231*times[1] 
     t,p, v = ins.orient()
     ins.boost(np.array((1.03,0.73)))
-    plt.quiver(p[0],p[1],1.03,0.73,label = "Boost nr 2")
-    print(p[0],p[1],1.03,0.73,"YAAAA")
+
+    print(p[0],p[1],1.03,0.73)
     ins.coast_until_time(timep + 400*times[1])
     indt = int(6717+5*231+400)
     t,p,v = ins.orient()
@@ -141,12 +141,7 @@ if __name__ == '__main__': #1494*0.0002
     boostnr3 = np.array((0.035,0.025))*np.array([ang[1],ang[0]])
     ins.boost(boostnr3)
 
-    plt.quiver(p[0],p[1],boostnr3[0],boostnr3[1])
     print(p[0],p[1],boostnr3[0],boostnr3[1],"boost 3")
-    ins.look_in_direction_of_planet(2)
-    ins.start_video()
-    ins.coast(0.1)
-    ins.finish_video()
     
     ins.coast(0.022)
     ins.record_destination(2)
@@ -155,3 +150,4 @@ if __name__ == '__main__': #1494*0.0002
     
     
     
+ 

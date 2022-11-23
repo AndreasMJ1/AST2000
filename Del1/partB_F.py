@@ -95,6 +95,9 @@ def gravity(r):
     return f
 
 def orbit_launch(F,Mass,fuel):
+    """
+    Numerically simualting the rocket launch
+    """
     vesc = np.sqrt((G*2*homeplanet_mass)/((radius*1e3)))
     dist = (radius*1e3)
     dt = 0.001

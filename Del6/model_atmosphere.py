@@ -1,4 +1,4 @@
-from cv2 import RHO
+#IKKE KODEMAL 
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -9,7 +9,7 @@ import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
 from scipy.interpolate import interp1d
-seed = utils.get_seed('andrmj')
+seed = 73494
 
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
@@ -22,23 +22,29 @@ plan_mass = system.masses[2] *const.m_sun
 rho0 = system.atmospheric_densities[2]
 h = const.m_p * 1.00784
 
-mean_weight = 44.01069 # finn eksakt 
-#44.0124 44.009
+mean_weight = 44.01069 
+
 
 def grav(r):
     return g*plan_mass/(system.radii[2]*1e3+r)**2
 
-def goof_func():
-    ### init values ###
+def Atmosphere_analysis():
+    """
+    Calculating the atmosphere profile of target planet. \\ 
+    Returns: Corresponding arrays of temperature (K), atmospheric density and position 
+    """
+
+    ### initial values ###
     r = 0
     dr = 1
     T0 = 325
     T = [T0]
     rho = [rho0]
     lf = 1.4 
+
     for i in range(150_000-1):
-        if T[-1] >= T0/2:
-            dT = -(lf-1)* mean_weight*h*grav(r)/(k*lf)
+        if T[-1] >= T0/2: 
+            dT = -(lf-1)* mean_weight*h*grav(r)/(k*lf) 
             ouf = T[-1] + dT*dr
             T.append(ouf)
             drho = -rho[-1]/T[-1] *dT -rho[-1]/T[-1]*mean_weight*h*grav(r)/(k)
@@ -53,9 +59,9 @@ def goof_func():
             r += dr
     pos = np.linspace(0,r,150_000)
     return T, rho , pos
-T, rho , pos = goof_func()
+T, rho , pos = Atmosphere_analysis()
 
-func = interp1d(pos,rho, kind ="quadratic")
+func = interp1d(pos,rho, kind ="quadratic") #Interpolating density as a function of radius
 
 
 if __name__ =="__main__":

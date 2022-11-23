@@ -1,3 +1,5 @@
+#IKKE KODEMAL
+
 from math import dist
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,10 +11,11 @@ import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
 
-seed = utils.get_seed('andrmj')
+seed = 73494
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
+#Initial values of solar system
 ecc = system.eccentricities
 aph_ang = system.aphelion_angles
 m_ax = system.semi_major_axes
@@ -25,8 +28,11 @@ def analytic_orbits(a,e,init_ang,N,x,y):
     coor_k = [r*np.cos(theta-init_ang),r*np.sin(theta-init_ang)]
     return coor_k
 
+if __name__ == "__main__":
 
-#for i in range(7):
-    #plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],5000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],5000,p_pos[0][i],p_pos[1][i])[1])
-#plt.scatter(0,0)
-#plt.show()
+    for i in range(7):
+        plt.plot(analytic_orbits(m_ax[i],ecc[i],aph_ang[i],5000,p_pos[0][i],p_pos[1][i])[0],analytic_orbits(m_ax[i],ecc[i],aph_ang[i],5000,p_pos[0][i],p_pos[1][i])[1])
+    plt.xlabel("Distance (AU)")
+    plt.ylabel("Distance (AU)")
+    plt.scatter(0,0)
+    plt.show()

@@ -9,11 +9,10 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-#from A1 import analytic_orbits
-#from A2 import grav
 
 
-seed = utils.get_seed('andrmj')
+
+seed = 73494
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
@@ -81,8 +80,8 @@ t = np.linspace(0,119000*0.0002,119000)
 plt.plot(r1[:,0,0],r1[:,0,1])
 plt.plot(r1[:,1,0],r1[:,1,1])
 plt.show()
-print(np.max(tot),np.min(tot))
-print(f"diff ={100*abs(((np.max(tot))-(np.min(tot)))/((np.mean(tot))))}%")
+
+print(f"Largest difference ={100*abs(((np.max(tot))-(np.min(tot)))/((np.mean(tot))))}%")
 
 plt.plot(t,kin)
 plt.plot(t,pot)

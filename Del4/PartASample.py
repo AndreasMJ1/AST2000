@@ -1,3 +1,4 @@
+#IKKE KODEMAl
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -9,7 +10,7 @@ from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
 from PIL import Image
 
-seed = utils.get_seed('andrmj')
+seed = 73494
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
@@ -27,12 +28,6 @@ pixels = np.array(img) # png into numpy array
 width , length = img.size
 
 
-
-### 1.1 
-#print(pixels.shape)   
-
-### 1.2 
-
 theta = (70*np.pi)/180 ; phi = (70*np.pi)/180 
 xmax = (2*np.sin(phi/2))/(1+np.cos(phi/2)) ; xmin = -xmax 
 ymax = (2*np.sin(theta/2))/(1+np.cos(theta/2)) ; ymin = -ymax 
@@ -41,7 +36,7 @@ x = np.linspace(xmin,xmax,640)
 y = np.linspace(ymax,ymin,480)
 X,Y = np.meshgrid(x,y)
 
-def HVAFAENIHELVETE(X,Y):
+def grid(X,Y):
     theta0 =np.pi/2 ; phi0 = 0 
     ro = np.sqrt(X**2+Y**2)
     beta = 2*np.arctan(ro/2)
@@ -50,7 +45,7 @@ def HVAFAENIHELVETE(X,Y):
     return theta , phi 
 
 def sky_imag():
-    theta , phi = HVAFAENIHELVETE(X,Y)
+    theta , phi = grid(X,Y)
     colormap = np.load('Del4\himmelkule.npy')
     pix = np.array(colormap)
     canvas = np.zeros((length,width,3),dtype ='uint8')

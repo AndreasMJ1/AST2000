@@ -1,3 +1,4 @@
+#IKKE KODEMAL
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -9,7 +10,7 @@ from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
 from PIL import Image
 
-seed = utils.get_seed('andrmj')
+seed = 73494
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 
@@ -22,8 +23,8 @@ p_masses = system.masses
 p_radii = system.radii
 
 img = Image.open('Del4/360/23.png') # Open existing png
-pixels = np.array(img) # png into numpy array
-width , length = img.size
+pixels = np.array(img)              # png into numpy array
+width , length = img.size           # Dimensions of image
 
 theta = (70*np.pi)/180 ; phi = (70*np.pi)/180 
 xmax = (2*np.sin(phi/2))/(1+np.cos(phi/2)) ; xmin = -xmax 
@@ -34,6 +35,9 @@ y = np.linspace(ymax,ymin,480)
 X,Y = np.meshgrid(x,y)
 
 def grid(X,Y,phi0):
+    """
+    Changing dimesions of grid from cartesian to angular
+    """
     theta0 =np.pi/2 ; phi0 = phi0*np.pi/180 
     ro = np.sqrt(X**2+Y**2)
     beta = 2*np.arctan(ro/2)
@@ -43,6 +47,9 @@ def grid(X,Y,phi0):
 
 
 def sky_imag(picture):
+    """
+    Function for comparing given reference picture to skyline and calculating angle 
+    """
     img = Image.open(picture)
     pixels = np.array(img)
     colormap = np.load('Del4\himmelkule.npy')
@@ -65,7 +72,9 @@ def sky_imag(picture):
       
 
 def rad_velocit():  
-
+    """
+    Function for calculating radial velocity by comparing velocites and angles from two given reference stars
+    """
     def formula(lamb):
         return (const.c_AU_pr_yr*lamb)/(656.3)
 
@@ -80,7 +89,6 @@ def rad_velocit():
     
     kart = 1/np.sin(ang2-ang1)*np.array(([np.sin(ang2),-np.sin(ang1)],[-np.cos(ang2),np.cos(ang1)]))
     x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
-
     return x , y 
 
 x,y = rad_velocit()
@@ -93,6 +101,9 @@ def lambda_to_velocity(lamds,phi):
     return vx,vy
     
 def trilateration(n):
+    """
+    Fuction for calculating position through trilateration of other planets 
+    """
     pos_array = np.load('positions.npy')
     #pos_array = pos 
     phi = np.linspace(0,2*np.pi,n)
