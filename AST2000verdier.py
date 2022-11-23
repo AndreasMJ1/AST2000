@@ -23,3 +23,6 @@ print(system.star_radius)
 print(system.star_mass)
 print(system.star_temperature)
 print(system.star_color)
+
+seed = utils.get_seed('andrmj')
+print(seed)

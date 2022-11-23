@@ -1,3 +1,4 @@
+#IKKE KODEMAL
 
 #Part 1
 
@@ -9,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
 import ast2000tools.constants as const
-
+#Inital values 
 mu = 0 
 sigma = 1 
 
@@ -21,18 +22,18 @@ def P(f,a,b):
     return P
 
 #1.3
-sigmal = [sigma*1,sigma*2,sigma*3]
+sigmal = [sigma*1,sigma*2,sigma*3] #Definerer ulike standardavvik
 
 for i in sigmal:
     print(P(f,-i,i))
 
-0.682689492137086
-0.9544997361036417
-0.9973002039367399
+#0.682689492137086
+#0.9544997361036417
+#0.9973002039367399
 
 
 #2.1
-
+#Inital values 
 N = 10**5
 T = 3000 
 k = const.k_B

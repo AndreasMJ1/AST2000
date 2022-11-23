@@ -1,3 +1,5 @@
+#IKKE KODEMAL 
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -15,7 +17,7 @@ L = 10e-6         #Box Length in meters
 N = 1e5           #Number of particles
 m = 3.3474472e-27 #Mass of individual particle in kg
 G = 6.6743e-11    #Gravitational Constant 
-seed = utils.get_seed('andrmj')
+seed = 73494
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
 spacecraft_mass = mission.spacecraft_mass*15
@@ -49,6 +51,9 @@ s = L/4             #Length from edge to escape hold (engine)
 #RUNNING THE CONDITIONAL INTEGRATION LOOP
 @njit()
 def particle_sim(x,v,l,exiting,f):
+    """
+    Simulating the performance of a singular engine box
+    """
     for i in range(int(steps)):
         x += dt*v    
         for j in range(int(N)):
@@ -65,23 +70,27 @@ def particle_sim(x,v,l,exiting,f):
     return x, l, exiting ,f
 
 def rocketengine_perf(mean_force):
+    """
+    Calculating fuel consumption
+    """
     guess_boxes = 1.6e13
     fuel_consume = box_mass * guess_boxes      #Consume per second 
     return fuel_consume
 
-def rocket_thrust(force,consumption,mass,boost):
-    pass
 
-x,l,exiting,tf = particle_sim(x,v,l,exiting,f)
+x,l,exiting,tf = particle_sim(x,v,l,exiting,f) #Unpacking values from engine simulation
 
 particles_per_second = exiting/r              
 mean_force = -tf                              
 box_mass = particles_per_second*m                     
 fuel_consume = rocketengine_perf(mean_force)
-#print(mean_force,fuel_consume)
+
 
 
 def gravity(r):
+    """
+    Funcion for gravity at distance r 
+    """
     f = -(G*homeplanet_mass)/(r**2)
     return f
 
@@ -109,35 +118,27 @@ def orbit_launch(F,Mass,fuel):
     return v , timer, pos ,dist
 
 if __name__ == '__main__':
-    print(mean_force*1.6e13)
+
     mission.set_launch_parameters(mean_force*1.6e13, fuel_consume, spacecraft_mass, 500, pos0, 0)
     mission.launch_rocket(0.001)
-    #print(mean_force*1.6e13,fuel_consume,spacecraft_mass)
-    
-    
-    vy0 = utils.AU_pr_yr_to_m_pr_s(system.initial_velocities[1,0])
 
-    rotv = 2*np.pi*radius*1e3/(utils.day_to_s(system.rotational_periods[0]))
+    vy0 = utils.AU_pr_yr_to_m_pr_s(system.initial_velocities[1,0]) 
+
+    rotv = 2*np.pi*radius*1e3/(utils.day_to_s(system.rotational_periods[0])) #Rotanional velocity
     vel, time, pos ,dist= orbit_launch(mean_force*1.6e13,spacecraft_mass,fuel_consume)
-    #x1 = pos[-1]*(89/time1[-1])
+    
     x1 = dist
     x = utils.m_to_AU(x1)  + pos0[0]
     y = (vy0 +rotv) *(401.44)
     y1 = utils.m_to_AU(y)
 
-    print(x,y1)
-    position = np.array([x,y1])
-    print(time)
-    print(utils.AU_to_m(5.2939e-05))
-    exac_pos = [1.22905961e+00, 8.38221473e-05]
-    mission.verify_launch_result(exac_pos) # [1.22905961e+00 8.38221473e-05]
+    position = np.array([x,y1]) #Calculated position error of 5.8951e-05 AU 
+    
+    exac_pos = [1.22905961e+00, 8.38221473e-05] #exact position obtained from AST - shortcut
+
+    mission.verify_launch_result(position)
 
 
-
-    #print(mission.measure_distances())
-    mission.verify_manual_orientation(exac_pos,[2.82005178 ,6.58920755],0.003908) # 66.830023664
-    mission.take_picture()
-    #mission.begin_interplanetary_travel()
     
 
 
