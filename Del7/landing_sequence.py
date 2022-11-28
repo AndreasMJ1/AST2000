@@ -162,7 +162,7 @@ if __name__ == '__main__': #1494*0.0002
     landing.fall(800)
     t,p,v = landing.orient()
     
-
+    
     t,p,v = landing.orient()
     landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
     landing.fall(130)

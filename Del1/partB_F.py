@@ -39,14 +39,12 @@ v =  np.random.normal(0,sigma, size = (int(N), 3))          # Velocity vector
 
 #SIMULATION VARIABLES
 r = 10e-9               #Simulation Runtime in Seconds
-steps = 1000               #Number of Steps Taken in Simulation
+steps = 1000            #Number of Steps Taken in Simulation
 dt = r/steps            #Simulation Step Length in Seconds
-
-#PREPARING THE SIMULATION
-exiting = 0         #The total number of particles that have exited the gas box
-f = 0               #Used to calculate Force/Second later in the simulation
-l = 0               #Amount That has bounced inside the box 
-s = L/4             #Length from edge to escape hold (engine)
+exiting = 0             #The total number of particles that have exited the gas box
+f = 0                   #Used to calculate Force/Second later in the simulation
+l = 0                   #Amount That has bounced inside the box 
+s = L/4                 #Length from edge to escape hole (engine)
 
 #RUNNING THE CONDITIONAL INTEGRATION LOOP
 @njit()

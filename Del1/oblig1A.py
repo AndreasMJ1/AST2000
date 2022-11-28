@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
 import ast2000tools.constants as const
+
 #Inital values 
 mu = 0 
 sigma = 1 

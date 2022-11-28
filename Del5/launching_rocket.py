@@ -145,7 +145,24 @@ if __name__ == '__main__': #1494*0.0002
     
     ins.coast(0.022)
     ins.record_destination(2)
+    landing = mission.begin_landing_sequence()
+
+    N = 403
+    posx = np.zeros(N)
+    posy = np.zeros(N)
+    
+    for i in trange(N):
+        landing.fall(2000)
+        t,p,v = landing.orient()
+        posx[i] = p[0]
+        posy[i] = p[1]
+
+    plt.plot(posx,posy)
+    plt.xlabel("x-position (m)")
+    plt.ylabel("y-position (m)")
     plt.show()
+    
+
 
     
     

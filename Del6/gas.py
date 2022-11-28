@@ -68,11 +68,11 @@ def GaussianModel(lambda0,mass):
                     vals = np.array((f_min[k],lambda_range[i]*1e-9,Temps[j]))
 
     ### Plotting functions for each compound ###
-    plt.plot(lambdas[ind0:ind1],flux[ind0:ind1]) 
-    plt.plot(lambdas[ind0:ind1],computed)
-    plt.xlabel("Lambda value +- max doppler shift")
-    plt.ylabel("Relative flux")
-    plt.show()
+    #plt.plot(lambdas[ind0:ind1],flux[ind0:ind1]) 
+    #plt.plot(lambdas[ind0:ind1],computed)
+    #plt.xlabel("Lambda value +- max doppler shift")
+    #plt.ylabel("Relative flux")
+    #plt.show()
     print(f"{vals[0]:.4f} -||- {vals[1]:.4f} -||- {vals[2]:.4f} -||- {particle_doppler:.4f}")
 
     return lowest
