@@ -17,12 +17,9 @@ times = plan_pos["times"]
 a = 1494
 
 time = 1494 * times[1]
-print(time)
-
-print(system.star_radius)
-print(system.star_mass)
-print(system.star_temperature)
-print(system.star_color)
 
 seed = utils.get_seed('andrmj')
-print(seed)
+dist = np.linalg.norm(np.array([539050.93487649 ,5120244.80184466]))
+print(dist)
+end = 1.67641 + 0.004 #yr 
+print(end)

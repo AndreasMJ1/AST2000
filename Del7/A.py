@@ -18,7 +18,7 @@ system = SolarSystem(seed)
 
 ang_vel = 2*np.pi/utils.yr_to_s(system.rotational_periods[2])
 
-### Creating functions for preparation before landing 
+### Creating functions for preparation before landing ###
 
 def grav(r):
     """

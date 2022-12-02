@@ -25,10 +25,10 @@ h = const.m_p * 1.00784
 mean_weight = 44.01069 # finn eksakt 
 #44.0124 44.009
 
-def grav(r):
+def gravity(r):
     return g*plan_mass/(system.radii[2]*1e3+r)**2
 
-def goof_func():
+def atmosphere_simulation():
     ### init values ###
     r = 0
     dr = 1
@@ -38,16 +38,16 @@ def goof_func():
     lf = 1.4 
     for i in range(150_000-1):
         if T[-1] >= T0/2:
-            dT = -(lf-1)* mean_weight*h*grav(r)/(k*lf)
+            dT = -(lf-1)* mean_weight*h*gravity(r)/(k*lf)
             ouf = T[-1] + dT*dr
             T.append(ouf)
-            drho = -rho[-1]/T[-1] *dT -rho[-1]/T[-1]*mean_weight*h*grav(r)/(k)
+            drho = -rho[-1]/T[-1] *dT -rho[-1]/T[-1]*mean_weight*h*gravity(r)/(k)
             step = rho[-1] + drho * dr 
             rho.append(step)
             r += dr 
         else:
             T.append(T0/2)
-            drho = -rho[-1] /(T0/2)*mean_weight*h*grav(r)/k
+            drho = -rho[-1] /(T0/2)*mean_weight*h*gravity(r)/k
             step = rho[-1] + drho * dr 
             rho.append(step)
             r += dr
@@ -55,7 +55,7 @@ def goof_func():
     pos = np.linspace(0,r,150_000)
     return T, rho , pos
     
-T, rho , pos = goof_func()
+T, rho , pos = atmosphere_simulation()
 
 func = interp1d(pos,rho, kind ="quadratic")
 print(func(0.000000001))
