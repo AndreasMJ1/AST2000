@@ -20,6 +20,5 @@ time = 1494 * times[1]
 
 seed = utils.get_seed('andrmj')
 dist = np.linalg.norm(np.array([539050.93487649 ,5120244.80184466]))
-print(dist)
-end = 1.67641 + 0.004 #yr 
-print(end)
+
+print(system.initial_velocities)

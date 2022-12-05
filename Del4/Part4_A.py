@@ -23,15 +23,9 @@ p_radii = system.radii
 
 
 img = Image.open('Del4\sample0000.png') # Open existing png
-pixels = np.array(img) # png into numpy array
+pixels = np.array(img)                  # png into numpy array
 width , length = img.size
 
-
-
-### 1.1 
-#print(pixels.shape)   
-
-### 1.2 
 
 theta = (70*np.pi)/180 ; phi = (70*np.pi)/180 
 xmax = (2*np.sin(phi/2))/(1+np.cos(phi/2)) ; xmin = -xmax 
@@ -41,7 +35,7 @@ x = np.linspace(xmin,xmax,640)
 y = np.linspace(ymax,ymin,480)
 X,Y = np.meshgrid(x,y)
 
-def HVAFAENIHELVETE(X,Y,phi0):
+def GRID(X,Y,phi0):
     theta0 =np.pi/2 ; phi0 = phi0*np.pi/180 
     ro = np.sqrt(X**2+Y**2)
     beta = 2*np.arctan(ro/2)
@@ -54,7 +48,7 @@ def sky_imag():
     pix = np.array(colormap)
     canvas = np.zeros((length,width,3),dtype ='uint8')
     for a in range(360):
-        theta , phi = HVAFAENIHELVETE(X,Y,a)
+        theta , phi = GRID(X,Y,a)
         for i in range(length):
             if i == (length-1) and k == (width-1):
                 img2 = Image.fromarray(canvas)

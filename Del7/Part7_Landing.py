@@ -1,3 +1,4 @@
+# IKKE KODEMAL
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as sp
@@ -7,9 +8,9 @@ from numba import jit
 import ast2000tools.utils as utils
 from ast2000tools.solar_system import SolarSystem
 from ast2000tools.space_mission import SpaceMission
-from Part7_Preperations import thruster_force
+from A import thruster_force
 
-seed = utils.get_seed('andrmj')
+seed = 73494
 
 mission = SpaceMission(seed)
 system = SolarSystem(seed)
@@ -66,7 +67,7 @@ def general_launch(phi,time,fuel_consume,Mass,F):
     
     ind = int(time/0.0002)
 
-    launch_point = plan_pos[ind,0,:] + utils.m_to_AU(rpi) #launch_point = plan_pos[:,0,ind] + utils.m_to_AU(rpi) 
+    launch_point = plan_pos[ind,0,:] + utils.m_to_AU(rpi)  
     
     ycomp = np.cos(phi)*dist*2*np.pi/(utils.day_to_s(system.rotational_periods[0]))
     ypos = np.array((0,utils.m_to_AU(ycomp*timer)))
@@ -75,18 +76,16 @@ def general_launch(phi,time,fuel_consume,Mass,F):
 
     inc = np.array((-9.49991765 ,-0.01766334)) - np.array([-9.28709058, -0.13534456])
     
-    print(inc, "boost")
     return rp ,fin_pos, timer ,launch_point
 
 
-if __name__ == '__main__': #1494*0.0002
+if __name__ == '__main__': 
     explanpos = np.load("planet_trajectories.npz")
     npos = explanpos['planet_positions']
     plan_pos = np.einsum("ijk->kji",npos)
     times = explanpos['times'] 
     mean_force = 776938.7689392876
     rp, finpos, time ,launch_point = general_launch(180, times[1494] , 0.18871032743168 ,spacecraft_mass ,mean_force)
-    #print(rp,finpos,time,launch_point)
 
     exac_pos = [8.69554508e-04 ,1.22575863e+00]
     exac_pos = [-4.39913930e-04  ,1.22575507e+00]
@@ -125,22 +124,23 @@ if __name__ == '__main__': #1494*0.0002
     ang = planet-p
     ins.boost(np.array((0.035,0.025))*np.array([ang[1],ang[0]]))
     ins.look_in_direction_of_planet(2)
-    
     ins.coast(0.022)
     ins.record_destination(2)
     
-    
+    ### Starting landing simulation ###
     landing = mission.begin_landing_sequence()
     landing.adjust_parachute_area(118.89)
     
     landing.look_in_direction_of_planet(2)
     
     landing.orient()
-    landing.boost(-np.array((-1162.68, 42.6937, 0))) # -1162.68, 42.6937, 0
+    landing.boost(-np.array((-1162.68, 42.6937, 0))) 
     ang = np.arctan(1.17361e+08/1.3586e+07)
     print(ang)
     landing.boost(30*np.array((-np.cos(ang),np.sin(ang),0)))
     landing.fall(80_000)
+
+    ### Approaching surface through deacceleration of radial velocity ###
     def adjust():
 
         t,p,v = landing.orient()
@@ -158,30 +158,31 @@ if __name__ == '__main__': #1494*0.0002
         landing.fall(3_000)
         t,p,v = landing.orient()
         landing.boost(np.array((-0.8*v[0],-0.8*v[1],0)))
+        landing.fall(800)
+        t,p,v = landing.orient()
+        
+        t,p,v = landing.orient()
+        landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
+        landing.fall(130)
+        t,p,v = landing.orient()
+        landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
+        landing.fall(130)
+        t,p,v = landing.orient()
+        landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
+        landing.fall(300)
+        t,p,v = landing.orient()
     adjust()
-    landing.fall(800)
-    t,p,v = landing.orient()
+
+    ### Deploying lander and parachute ###
     
-    
-    t,p,v = landing.orient()
-    landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
-    landing.fall(130)
-    t,p,v = landing.orient()
-    landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
-    landing.fall(130)
-    t,p,v = landing.orient()
-    landing.boost(np.array((-0.95*v[0],-0.95*v[1],0)))
-    landing.fall(300)
-    t,p,v = landing.orient()
     landing.boost(np.array((-v[0],-v[1],0)))
     landing.launch_lander(np.array((0,0,0)))
-    landing.deploy_parachute()
-    landing.fall(50)
     t,p,v = landing.orient()
-    #landing.boost(np.array((-v[0],-v[1],0)))
-    landing.fall(50)
+    landing.deploy_parachute()
     landing.orient()
-    landing.fall(50_000)    
+    landing.fall(100)
+    
+    landing.fall(50_000)
 
     
     landing.orient()

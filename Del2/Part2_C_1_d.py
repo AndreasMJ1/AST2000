@@ -33,6 +33,9 @@ def gravS(r:np.asarray):
     return a 
 
 def sim_orbit1(steps,dt):            #Simulation Loop
+    """
+    Simulating orbits to calculate mechanical energy
+    """
     sv = -(p3*p_vel[1,0])/Sm
     r = np.zeros((steps,2,2))
     v = np.zeros((steps,2,2))

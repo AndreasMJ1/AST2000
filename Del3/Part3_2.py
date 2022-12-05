@@ -1,4 +1,4 @@
-from part1 import *
+from Part3_1 import *
 
 ### Velger planet 2 
 

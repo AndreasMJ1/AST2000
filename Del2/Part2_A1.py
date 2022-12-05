@@ -22,6 +22,9 @@ m_ax = system.semi_major_axes
 p_pos = system.initial_positions
 
 def analytic_orbits(a,e,init_ang,N,x,y):
+    """
+    Calculating analytical orbit
+    """
     b = np.sqrt((1-e**2)*a**2)
     theta = np.linspace(0,np.pi*2,N)
     r = (a*(1-e**2)/(1+(e*np.cos(theta))))

@@ -91,7 +91,7 @@ def rad_velocit():
     x,y = np.matmul(kart,np.array(([radvel_sun1-radvel_plan1],[radvel_sun2-radvel_plan2])))
     return x , y 
 
-x,y = rad_velocit()
+
 
 def lambda_to_velocity(lamds,phi):
     l0 = 656.3
@@ -135,4 +135,4 @@ def trilateration(n):
 
 #print(x[0],y[0])
 
-print(sky_imag('sky_picture.png'))
+#print(sky_imag('sky_picture.png'))
