@@ -132,30 +132,9 @@ if __name__ == '__main__': #1494*0.0002
     ins.coast_until_time(timep + 400*times[1])
     indt = int(6717+5*231+400)
     ins.orient()
-    print("Pick up the bloody pace") # 4.3060466  1.04966561
+
     boostnr2 =  np.array((4.27,  1.3)) - np.array((5.02218,1.53139))
     ins.boost(boostnr2)
-    """
-    ins.look_in_direction_of_planet(2)
-    ins.start_video()
-    ins.coast(0.1)
-    ins.finish_video()
-    
-    ins.coast(0.022)
-    ins.record_destination(2)
-    """
-
-    def orbit_fix(ind):
-        t,p,v = ins.orient()
-        planet = np.array((plan_pos[ind,2,0],plan_pos[ind,2,1]))
-        ang = planet-p 
-        boost = np.array((ang[1],ang[0]))
-        ins.coast_until_time((ind+15)*times[1])
-
-    #orbit_fix(indt)
-    ##orbit_fix(indt+15)
-    #ins.coast_until_time(((indt+15)*times[1]+0.018))
-    #orbit_fix(int(indt+15+(0.018/times[1])))
 
 
     planet = np.array((plan_pos[indt+15,2,0],plan_pos[indt+15,2,1]))
